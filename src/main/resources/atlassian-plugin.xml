@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<atlassian-plugin key="${project.groupId}.${project.artifactId}" name="${project.name}" plugins-version="2">
+  <plugin-info>
+    <description>${project.description}</description>
+    <version>${project.version}</version>
+    <vendor name="${project.organization.name}" url="${project.organization.url}"/>
+    <param name="plugin-icon">images/pluginIcon.png</param>
+    <param name="plugin-logo">images/pluginLogo.png</param>
+  </plugin-info>
+  <!-- add our i18n resource -->
+  <resource type="i18n" name="i18n" location="eiffel-rabbitmq-post-receive-hook"/>
+  <!-- add our web resources -->
+  <web-resource key="eiffel-rabbitmq-post-receive-hook-resources" name="eiffel-rabbitmq-post-receive-hook Web Resources">
+    <dependency>com.atlassian.auiplugin:ajs</dependency>
+    <resource type="download" name="eiffel-rabbitmq-post-receive-hook.css" location="/css/eiffel-rabbitmq-post-receive-hook.css"/>
+    <resource type="download" name="eiffel-rabbitmq-post-receive-hook.js" location="/js/eiffel-rabbitmq-post-receive-hook.js"/>
+    <resource type="download" name="images/" location="/images"/>
+    <context>eiffel-rabbitmq-post-receive-hook</context>
+  </web-resource>
+  <repository-hook name="Eiffel Rabbit MQ Post Receive Hook" i18n-name-key="eiffel-rabbit-mq-post-receive-hook.name" key="eiffel-rabbit-mq-post-receive-hook" class="net.praqma.stash.plugins.tracey.hook.EiffelRabbitMQPostReceiveHook">
+    <description key="eiffel-rabbit-mq-post-receive-hook.description">The Eiffel Rabbit MQ Post Receive Hook Plugin</description>
+    <config-form name="Eiffel Rabbit MQ Post Receive Hook Config" key="eiffel-rabbit-mq-post-receive-hook-config">
+      <view>net.praqma.stash.plugins.tracey.hook.eiffelrabbitmqpostreceivehook.view</view>
+      <directory location="/static/"/>
+    </config-form>
+  </repository-hook>
+</atlassian-plugin>

@@ -1,0 +1,56 @@
+{namespace net.praqma.stash.plugins.tracey.hook.eiffelrabbitmqpostreceivehook}
+
+/**
+ * @param? config
+ * @param? errors
+ */
+{template .view}
+
+
+  <h3>RabbitMQ settings</h3>
+
+  {call aui.form.textareaField}
+    {param id: 'rabbit.url' /}
+    {param labelContent: 'RabbitMQ server address' /}
+    {param value: $config['rabbit.url'] /}
+    {param descriptionText: 'RabbitMQ server address to connect to.' /}
+    {param errorTexts: $errors ? $errors['rabbit.url'] : null /}
+    {param rows: '4' /}
+  {/call}
+
+  {call aui.form.textareaField}
+    {param id: 'rabbit.exchange' /}
+    {param labelContent: 'RabbitMQ exchange name' /}
+    {param value: $config['rabbit.exchange'] /}
+    {param descriptionText: 'RabbitMQ exchange names to send messages to.' /}
+    {param errorTexts: $errors ? $errors['rabbit.exchange'] : null /}
+    {param rows: '4' /}
+  {/call}
+
+  {call aui.form.textareaField}
+    {param id: 'rabbit.routingkey' /}
+    {param labelContent: 'RabbitMQ routing key' /}
+    {param value: $config['rabbit.routingkey'] /}
+    {param descriptionText: 'RabbitMQ routing key to use when sending messages.' /}
+    {param errorTexts: $errors ? $errors['rabbit.routingkey'] : null /}
+    {param rows: '4' /}
+  {/call}
+
+  {call aui.form.textareaField}
+    {param id: 'rabbit.user' /}
+    {param labelContent: 'RabbitMQ user name' /}
+    {param value: $config['rabbit.user'] /}
+    {param descriptionText: 'User name to use when connecting to RabbitMQ server.' /}
+    {param errorTexts: $errors ? $errors['rabbit.user'] : null /}
+    {param rows: '4' /}
+  {/call}
+
+  {call aui.form.textareaField}
+    {param id: 'rabbit.password' /}
+    {param labelContent: 'RabbitMQ password' /}
+    {param value: $config['rabbit.password'] /}
+    {param descriptionText: 'Password to use when connecting to RabbitMQ server.' /}
+    {param errorTexts: $errors ? $errors['rabbit.password'] : null /}
+    {param rows: '4' /}
+  {/call}
+{/template}

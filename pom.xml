@@ -8,6 +8,10 @@
     <groupId>net.praqma.stash.plugins.tracey</groupId>
     <artifactId>eiffel-rabbitmq-post-receive-hook</artifactId>
     <version>1.0.0-SNAPSHOT</version>
+    <organization>
+        <name>Praqma. The Continuous Delivery and DevOps company</name>
+        <url>http://www.praqma.com/</url>
+    </organization>
     <dependencyManagement>
         <dependencies>
             <dependency>

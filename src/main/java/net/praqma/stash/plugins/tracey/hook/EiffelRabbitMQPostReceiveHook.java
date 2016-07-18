@@ -31,8 +31,7 @@ import java.util.Collection;
 // TODO: add configuration validation
 // TODO: read domainId from config
 // TODO: read rabbitmq configuration from config
-// TODO: add plugin configuration service and use it for isEnabled, branchFilter per repo configuration
-// TODO: add support for disabling plugin per repo
+// TODO: add plugin configuration service and use it for branchFilter per repo configuration
 // TODO: add support for filtering branches
 // TODO: publish plugin
 

@@ -18,7 +18,10 @@ public class RabbitMQBrokerServiceImpl implements BrokerService {
     public RabbitMQBrokerServiceImpl(final BrokerConfigurationService brokerConfigurationService) {
         // Read configuration when it is implemented
         this.broker = new TraceyRabbitMQBrokerImpl();
-        broker.setSender(new TraceyRabbitMQSenderImpl());
+        broker.setSender(new TraceyRabbitMQSenderImpl(((RabbitMQBrokerConfigurationServiceImpl) brokerConfigurationService).getHost(),
+                ((RabbitMQBrokerConfigurationServiceImpl) brokerConfigurationService).getUsername(),
+                ((RabbitMQBrokerConfigurationServiceImpl) brokerConfigurationService).getPassword(),
+                ((RabbitMQBrokerConfigurationServiceImpl) brokerConfigurationService).getPort()));
     }
 
     @Override

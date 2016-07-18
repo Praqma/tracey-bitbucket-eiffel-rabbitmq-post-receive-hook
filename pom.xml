@@ -43,10 +43,10 @@
             <scope>compile</scope>
         </dependency>
         <dependency>
-            <groupId>com.jcabi</groupId>
-            <artifactId>jcabi-manifests</artifactId>
-            <version>1.1</version>
-            <scope>compile</scope>
+            <groupId>org.osgi</groupId>
+            <artifactId>org.osgi.core</artifactId>
+            <version>6.0.0</version>
+            <scope>provided</scope>
         </dependency>
         <!-- REQUIRED by jgit to work properly otherwise OSGi conflict. TODO:Find a better way -->
         <dependency>
@@ -204,19 +204,6 @@
                         </dependency>
                     </scannedDependencies>
                     <verbose>false</verbose>
-                </configuration>
-            </plugin>
-            <!-- In order to make sure that we have correct info in the manifest file so we can generate correct GAV -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-jar-plugin</artifactId>
-                <configuration>
-                    <archive>
-                        <manifest>
-                            <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
-                            <addDefaultSpecificationEntries>true</addDefaultSpecificationEntries>
-                        </manifest>
-                    </archive>
                 </configuration>
             </plugin>
             <plugin>

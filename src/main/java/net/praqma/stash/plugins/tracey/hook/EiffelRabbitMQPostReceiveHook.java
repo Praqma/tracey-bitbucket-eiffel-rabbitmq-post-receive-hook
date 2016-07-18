@@ -19,8 +19,6 @@ import java.util.Collection;
 // TODO: tests
 // TODO: static analysis
 // TODO: documentation
-// TODO: get branch - almost done, remove refs/heads some how
-// TODO: Fix gav to read plugin values
 // TODO: add issues parsing
 // TODO: resolve username and add it to the message Data.Author.id
 // TODO: Move GitService to proper service when I figure how to make ExportAsService annotation work

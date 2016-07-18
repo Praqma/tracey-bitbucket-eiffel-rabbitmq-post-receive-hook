@@ -4,7 +4,5 @@ import com.atlassian.stash.repository.Repository;
 import net.praqma.stash.plugins.tracey.exceptions.ProtocolServiceException;
 
 public interface ProtocolService {
-
-    public String getMessage(final String commmitId, final String branch, final Repository repository) throws ProtocolServiceException;
-
+    String getMessage(final String commmitId, final String branch, final Repository repository) throws ProtocolServiceException;
 }

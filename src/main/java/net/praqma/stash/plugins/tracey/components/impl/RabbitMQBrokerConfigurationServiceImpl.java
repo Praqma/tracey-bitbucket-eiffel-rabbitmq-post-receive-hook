@@ -8,6 +8,7 @@ public class RabbitMQBrokerConfigurationServiceImpl implements BrokerConfigurati
     private static final Logger log = LoggerFactory.getLogger(RabbitMQBrokerConfigurationServiceImpl.class);
 
     public RabbitMQBrokerConfigurationServiceImpl() {
+        log.warn("Implement me!");
     }
 
     // TODO: read this from global configuration

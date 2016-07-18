@@ -3,9 +3,6 @@ package ut.net.praqma.stash.plugins.tracey.components.impl;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import net.praqma.stash.plugins.tracey.components.impl.GitServiceImpl;
-
-import static org.mockito.Mockito.*;
 
 /**
  * @since 3.5

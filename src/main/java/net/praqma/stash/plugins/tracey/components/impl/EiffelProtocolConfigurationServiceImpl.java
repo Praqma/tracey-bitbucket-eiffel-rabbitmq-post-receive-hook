@@ -8,6 +8,7 @@ public class EiffelProtocolConfigurationServiceImpl implements ProtocolConfigura
     private static final Logger log = LoggerFactory.getLogger(EiffelProtocolConfigurationServiceImpl.class);
 
     public EiffelProtocolConfigurationServiceImpl() {
+        log.warn("Implement me!");
     }
 
     public String getDomainId() {

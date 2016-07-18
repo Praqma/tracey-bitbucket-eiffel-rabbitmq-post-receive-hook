@@ -4,6 +4,6 @@ import net.praqma.stash.plugins.tracey.exceptions.BrokerServiceException;
 
 public interface BrokerService {
 
-    public void send(String message, String destination) throws BrokerServiceException;
+    void send(String message, String destination) throws BrokerServiceException;
 
 }

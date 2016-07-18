@@ -17,7 +17,6 @@ import org.slf4j.LoggerFactory;
 import java.util.Collection;
 
 // TODO: tests
-// TODO: static analysis
 // TODO: documentation
 // TODO: add issues parsing
 // TODO: resolve username and add it to the message Data.Author.id

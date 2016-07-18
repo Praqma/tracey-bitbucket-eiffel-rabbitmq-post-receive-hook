@@ -31,6 +31,7 @@ import java.util.Collection;
 // TODO: add plugin configuration service and use it for branchFilter per repo configuration
 // TODO: add support for filtering branches
 // TODO: publish plugin
+// TODO: use git notes to store eventId and then populate previous link
 
 @Scanned
 public class EiffelRabbitMQPostReceiveHook implements AsyncPostReceiveRepositoryHook, RepositorySettingsValidator

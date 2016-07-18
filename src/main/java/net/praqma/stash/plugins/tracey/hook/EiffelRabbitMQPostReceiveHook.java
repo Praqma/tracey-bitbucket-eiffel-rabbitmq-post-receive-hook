@@ -7,70 +7,70 @@ import com.atlassian.stash.hook.repository.*;
 import com.atlassian.stash.repository.*;
 import com.atlassian.stash.server.ApplicationPropertiesService;
 import com.atlassian.stash.setting.*;
-import net.praqma.stash.plugins.tracey.components.api.GitService;
-import net.praqma.stash.plugins.tracey.components.api.ProtocolService;
-import net.praqma.stash.plugins.tracey.components.impl.EiffelProtocolServiceImpl;
-import net.praqma.stash.plugins.tracey.components.impl.GitServiceImpl;
-import net.praqma.tracey.broker.TraceyBroker;
-import net.praqma.tracey.broker.TraceyIOError;
-import net.praqma.tracey.broker.TraceyValidatorError;
-import net.praqma.tracey.broker.rabbitmq.TraceyRabbitMQBrokerImpl;
-import net.praqma.tracey.broker.rabbitmq.TraceyRabbitMQSenderImpl;
+import net.praqma.stash.plugins.tracey.components.api.*;
+import net.praqma.stash.plugins.tracey.components.impl.*;
+import net.praqma.stash.plugins.tracey.exceptions.BrokerServiceException;
+import net.praqma.stash.plugins.tracey.exceptions.ProtocolServiceException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.Collection;
 
-// TODO: Fix gav to read plugin values
-// TODO: resolve username and add it to the message Data.Author.id
-// TODO: add issues parsing
-// TODO: fix configuration - global and per repo
-// TODO: read domainId from config
-// TODO: read rabbitmq configuration from config
 // TODO: tests
 // TODO: static analysis
 // TODO: documentation
-// TODO: get branch - almost done
+// TODO: get branch - almost done, remove refs/heads some how
+// TODO: Fix gav to read plugin values
+// TODO: add issues parsing
+// TODO: resolve username and add it to the message Data.Author.id
 // TODO: Move GitService to proper service when I figure how to make ExportAsService annotation work
 // TODO: Move ProtocolService to proper service when I figure how to make ExportAsService annotation work
-// TODO: better error handling - figure out where to break and where to not
+// TODO: Move BrokerService to proper service when I figure how to make ExportAsService annotation work
+// TODO: Move BrokerConfigurationService to proper service when I figure how to make ExportAsService annotation work
+// TODO: fix configuration - global and per repo
+// TODO: add configuration validation
+// TODO: read domainId from config
+// TODO: read rabbitmq configuration from config
+// TODO: add plugin configuration service and use it for isEnabled, branchFilter per repo configuration
+// TODO: add support for disabling plugin per repo
+// TODO: add support for filtering branches
+// TODO: publish plugin
 
 @Scanned
 public class EiffelRabbitMQPostReceiveHook implements AsyncPostReceiveRepositoryHook, RepositorySettingsValidator
 {
     private static final Logger log = LoggerFactory.getLogger(EiffelRabbitMQPostReceiveHook.class.getName());
-    private final TraceyBroker broker;
+    // TODO: all services below should be declared as actual services using ExportAsService. This is a shortcut because I can't make spring to discover them
+    private final BrokerConfigurationService brokerConfigurationService;
+    private final ProtocolConfigurationService protocolConfigurationService;
+    private final BrokerService brokerService;
     private final ProtocolService protocolService;
     private final GitService gitService;
 
     public EiffelRabbitMQPostReceiveHook (@ComponentImport final ApplicationPropertiesService applicationPropertiesService,
                                           @ComponentImport final CommitService commitService) {
-        this.protocolService = new EiffelProtocolServiceImpl(applicationPropertiesService);
+        // TODO: When exported all serives below should be brought in using @ComponentImport as it is done for the system services
+        // TODO: Also, applicationPropertiesService and commitService will be not needed here since they will be consumed by corresponding services
         this.gitService = new GitServiceImpl(commitService);
-        this.broker = new TraceyRabbitMQBrokerImpl();
-        broker.setSender(new TraceyRabbitMQSenderImpl());
+        this.brokerConfigurationService = new RabbitMQBrokerConfigurationServiceImpl();
+        this.protocolConfigurationService = new EiffelProtocolConfigurationServiceImpl();
+        this.brokerService = new RabbitMQBrokerServiceImpl(brokerConfigurationService);
+        this.protocolService = new EiffelProtocolServiceImpl(applicationPropertiesService, protocolConfigurationService);
     }
 
     @Override
     public void postReceive(RepositoryHookContext context, Collection<RefChange> refChanges)
     {
         final Repository repository = context.getRepository();
-        for (RefChange change:refChanges) {
-            for (String sha1:gitService.getCommitsDelta(repository, change)) {
-                String message = protocolService.getMessage(sha1, change.getRefId(), repository);
-                // Or shall we just break here?
-                if (message == null) {
-                    continue;
-                }
-                log.debug("Ready to send the following message\n" + message);
-                try {
-                    broker.send(message, "EiffelSourceChangeCreatedEvent");
-                } catch (TraceyValidatorError traceyValidatorError) {
-                    traceyValidatorError.printStackTrace();
-                } catch (TraceyIOError traceyIOError) {
-                    traceyIOError.printStackTrace();
+        try {
+            for (RefChange change:refChanges) {
+                for (String sha1:gitService.getCommitsDelta(repository, change)) {
+                    String message = protocolService.getMessage(sha1, change.getRefId(), repository);
+                    brokerService.send(message, ((RabbitMQBrokerConfigurationServiceImpl) brokerConfigurationService).getExchange());
                 }
             }
+        } catch (BrokerServiceException|ProtocolServiceException error) {
+            log.error("Can't send message notification about new commit for repository " + repository.getName(), error);
         }
     }
 

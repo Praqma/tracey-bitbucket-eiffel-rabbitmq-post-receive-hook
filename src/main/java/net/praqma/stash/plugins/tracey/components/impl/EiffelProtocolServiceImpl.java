@@ -5,7 +5,10 @@ import com.atlassian.stash.server.ApplicationPropertiesService;
 import com.google.protobuf.InvalidProtocolBufferException;
 import com.google.protobuf.util.JsonFormat;
 import com.jcabi.manifests.Manifests;
+import net.praqma.stash.plugins.tracey.components.api.BrokerConfigurationService;
+import net.praqma.stash.plugins.tracey.components.api.ProtocolConfigurationService;
 import net.praqma.stash.plugins.tracey.components.api.ProtocolService;
+import net.praqma.stash.plugins.tracey.exceptions.ProtocolServiceException;
 import net.praqma.tracey.protocol.eiffel.events.EiffelSourceChangeCreatedEventOuterClass.EiffelSourceChangeCreatedEvent;
 import net.praqma.tracey.protocol.eiffel.factories.EiffelSourceChangeCreatedEventFactory;
 import net.praqma.tracey.protocol.eiffel.models.Models;
@@ -19,26 +22,27 @@ import java.net.UnknownHostException;
 public class EiffelProtocolServiceImpl implements ProtocolService {
     private static final Logger log = LoggerFactory.getLogger(EiffelProtocolServiceImpl.class);
     private final ApplicationPropertiesService applicationPropertiesService;
+    private final ProtocolConfigurationService protocolConfigurationService;
 
-    public EiffelProtocolServiceImpl(final ApplicationPropertiesService applicationPropertiesService) {
+    public EiffelProtocolServiceImpl(final ApplicationPropertiesService applicationPropertiesService, final ProtocolConfigurationService protocolConfigurationService) {
         this.applicationPropertiesService = applicationPropertiesService;
+        this.protocolConfigurationService = protocolConfigurationService;
     }
 
     @Override
-    public String getMessage(final String commmitId, final String branch, final Repository repository) {
+    public String getMessage(final String commmitId, final String branch, final Repository repository) throws ProtocolServiceException {
         final String repoPath = applicationPropertiesService.getRepositoryDir(repository).getAbsolutePath();
         final EiffelSourceChangeCreatedEventFactory factory = new EiffelSourceChangeCreatedEventFactory(
                 getHostName(),
                 this.applicationPropertiesService.getDisplayName(),
                 this.applicationPropertiesService.getBaseUrl().toString(),
-                "domainId",
+                ((EiffelProtocolConfigurationServiceImpl) this.protocolConfigurationService).getDomainId(),
                 getGAV());
         String result;
         try {
             factory.parseFromGit(repoPath, commmitId, branch);
-        } catch (IOException e) {
-            e.printStackTrace();
-            return null;
+        } catch (IOException error) {
+            throw new ProtocolServiceException("Can't parse commit " + commmitId + " info from repository " + repoPath, error);
         }
         EiffelSourceChangeCreatedEvent.Builder event = (EiffelSourceChangeCreatedEvent.Builder) factory.create();
         // Update GitIdentifier
@@ -49,9 +53,8 @@ public class EiffelProtocolServiceImpl implements ProtocolService {
         event.setData(data.setGitIdentifier(git));
         try {
             result = JsonFormat.printer().print(event.build());
-        } catch (InvalidProtocolBufferException e) {
-            e.printStackTrace();
-            return null;
+        } catch (InvalidProtocolBufferException error) {
+            throw new ProtocolServiceException("Can't format message to JSON\n" + event.build().toString(), error);
         }
         return result;
     }

@@ -10,12 +10,16 @@ import net.praqma.stash.plugins.tracey.exceptions.ProtocolServiceException;
 import net.praqma.tracey.protocol.eiffel.events.EiffelSourceChangeCreatedEventOuterClass.EiffelSourceChangeCreatedEvent;
 import net.praqma.tracey.protocol.eiffel.factories.EiffelSourceChangeCreatedEventFactory;
 import net.praqma.tracey.protocol.eiffel.models.Models;
+import net.praqma.utils.parsers.cmg.api.CommitMessageParser;
+import net.praqma.utils.parsers.cmg.impl.Jira;
 import org.osgi.framework.FrameworkUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.net.InetAddress;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.net.UnknownHostException;
 import java.util.Dictionary;
 
@@ -30,7 +34,7 @@ public class EiffelProtocolServiceImpl implements ProtocolService {
     }
 
     @Override
-    public String getMessage(final String commmitId, final String branch, final Repository repository) throws ProtocolServiceException {
+    public String getMessage(final String commmitId, final String branch, final String jiraUrl, final String jiraProjectName, final Repository repository) throws ProtocolServiceException {
         final String repoPath = applicationPropertiesService.getRepositoryDir(repository).getAbsolutePath();
         final EiffelSourceChangeCreatedEventFactory factory = new EiffelSourceChangeCreatedEventFactory(
                 getHostName(),
@@ -39,8 +43,14 @@ public class EiffelProtocolServiceImpl implements ProtocolService {
                 ((EiffelProtocolConfigurationServiceImpl) this.protocolConfigurationService).getDomainId(),
                 getGAV());
         String result;
+        CommitMessageParser parser;
         try {
-            factory.parseFromGit(repoPath, commmitId, branch);
+            parser = new Jira(new URL(jiraUrl), jiraProjectName);
+        } catch (MalformedURLException error) {
+            throw new ProtocolServiceException("Can't parse commit " + commmitId + ". Can't parse URL " + jiraUrl, error);
+        }
+        try {
+            factory.parseFromGit(repoPath, commmitId, branch, parser);
         } catch (IOException error) {
             throw new ProtocolServiceException("Can't parse commit " + commmitId + " info from repository " + repoPath, error);
         }
@@ -77,7 +87,7 @@ public class EiffelProtocolServiceImpl implements ProtocolService {
         catch (UnknownHostException e) {
             log.debug("Hostname can not be resolved due to the following. Use " + hostname + " as a hostname\n" + e.getMessage());
         }
-        log.debug("Retunr hostname: " + hostname);
+        log.debug("Return hostname: " + hostname);
         return hostname;
     }
 }

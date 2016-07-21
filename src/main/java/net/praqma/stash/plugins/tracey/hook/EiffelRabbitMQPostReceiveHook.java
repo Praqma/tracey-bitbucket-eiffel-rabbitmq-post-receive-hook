@@ -18,7 +18,6 @@ import java.util.Collection;
 
 // TODO: tests
 // TODO: documentation
-// TODO: add issues parsing
 // TODO: resolve username and add it to the message Data.Author.id
 // TODO: Move GitService to proper service when I figure how to make ExportAsService annotation work
 // TODO: Move ProtocolService to proper service when I figure how to make ExportAsService annotation work
@@ -28,7 +27,7 @@ import java.util.Collection;
 // TODO: add configuration validation
 // TODO: read domainId from config
 // TODO: read rabbitmq configuration from config
-// TODO: add plugin configuration service and use it for branchFilter per repo configuration
+// TODO: add plugin configuration service. Use it for branchFilter, jiraUrl and jiraProjectName per repo configuration
 // TODO: add support for filtering branches
 // TODO: publish plugin
 // TODO: use git notes to store eventId and then populate previous link
@@ -62,7 +61,8 @@ public class EiffelRabbitMQPostReceiveHook implements AsyncPostReceiveRepository
         try {
             for (RefChange change:refChanges) {
                 for (String sha1:gitService.getCommitsDelta(repository, change)) {
-                    String message = protocolService.getMessage(sha1, change.getRefId(), repository);
+                    // TODO: read Jira project name from the plugin config when available
+                    String message = protocolService.getMessage(sha1, change.getRefId(), "http://jira.com", "myproject", repository);
                     brokerService.send(message, ((RabbitMQBrokerConfigurationServiceImpl) brokerConfigurationService).getExchange());
                 }
             }

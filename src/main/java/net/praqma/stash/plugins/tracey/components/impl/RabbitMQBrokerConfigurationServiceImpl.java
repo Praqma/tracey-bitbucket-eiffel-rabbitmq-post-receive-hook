@@ -5,10 +5,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class RabbitMQBrokerConfigurationServiceImpl implements BrokerConfigurationService {
-    private static final Logger log = LoggerFactory.getLogger(RabbitMQBrokerConfigurationServiceImpl.class);
+    private static final Logger LOG = LoggerFactory.getLogger(RabbitMQBrokerConfigurationServiceImpl.class);
 
     public RabbitMQBrokerConfigurationServiceImpl() {
-        log.warn("Implement me!");
+        LOG.warn("Implement me!");
     }
 
     // TODO: read this from global configuration

@@ -35,7 +35,7 @@ import java.util.Collection;
 @Scanned
 public class EiffelRabbitMQPostReceiveHook implements AsyncPostReceiveRepositoryHook, RepositorySettingsValidator
 {
-    private static final Logger log = LoggerFactory.getLogger(EiffelRabbitMQPostReceiveHook.class.getName());
+    private static final Logger LOG = LoggerFactory.getLogger(EiffelRabbitMQPostReceiveHook.class.getName());
     // TODO: all services below should be declared as actual services using ExportAsService. This is a shortcut because I can't make spring to discover them
     private final BrokerConfigurationService brokerConfigurationService;
     private final ProtocolConfigurationService protocolConfigurationService;
@@ -67,7 +67,7 @@ public class EiffelRabbitMQPostReceiveHook implements AsyncPostReceiveRepository
                 }
             }
         } catch (BrokerServiceException|ProtocolServiceException error) {
-            log.error("Can't send message notification about new commit for repository " + repository.getName(), error);
+            LOG.error("Can't send message notification about new commit for repository " + repository.getName(), error);
         }
     }
 

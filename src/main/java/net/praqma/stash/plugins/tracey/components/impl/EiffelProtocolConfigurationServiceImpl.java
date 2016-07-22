@@ -5,10 +5,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class EiffelProtocolConfigurationServiceImpl implements ProtocolConfigurationService {
-    private static final Logger log = LoggerFactory.getLogger(EiffelProtocolConfigurationServiceImpl.class);
+    private static final Logger LOG = LoggerFactory.getLogger(EiffelProtocolConfigurationServiceImpl.class);
 
     public EiffelProtocolConfigurationServiceImpl() {
-        log.warn("Implement me!");
+        LOG.warn("Implement me!");
     }
 
     public String getDomainId() {

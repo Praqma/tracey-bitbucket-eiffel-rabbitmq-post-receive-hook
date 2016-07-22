@@ -22,7 +22,7 @@ import java.net.URL;
 import java.util.Dictionary;
 
 public class EiffelProtocolServiceImpl implements ProtocolService {
-    private static final Logger log = LoggerFactory.getLogger(EiffelProtocolServiceImpl.class);
+    private static final Logger LOG = LoggerFactory.getLogger(EiffelProtocolServiceImpl.class);
     private final ApplicationPropertiesService applicationPropertiesService;
     private final ProtocolConfigurationService protocolConfigurationService;
 
@@ -53,10 +53,12 @@ public class EiffelProtocolServiceImpl implements ProtocolService {
         }
         EiffelSourceChangeCreatedEvent.Builder event = (EiffelSourceChangeCreatedEvent.Builder) factory.create();
         // Update GitIdentifier
+        LOG.debug("Generated message before GitIdentifier update: " + event.toString());
         EiffelSourceChangeCreatedEvent.EiffelSourceChangeCreatedEventData.Builder data = event.getData().toBuilder();
         Models.Data.GitIdentifier.Builder git = data.getGitIdentifier().toBuilder();
         git.setRepoName(repository.getSlug());
         git.setRepoUri(applicationPropertiesService.getBaseUrl().toString() + "/scm/" + repository.getProject().getKey() + "/" + repository.getSlug());
+        LOG.debug("Set GitIdentifier to " + git.toString());
         event.setData(data.setGitIdentifier(git));
         try {
             result = JsonFormat.printer().print(event.build());

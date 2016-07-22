@@ -12,7 +12,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class RabbitMQBrokerServiceImpl implements BrokerService {
-    private static final Logger log = LoggerFactory.getLogger(RabbitMQBrokerServiceImpl.class);
+    private static final Logger LOG = LoggerFactory.getLogger(RabbitMQBrokerServiceImpl.class);
     private final TraceyBroker broker;
 
     public RabbitMQBrokerServiceImpl(final BrokerConfigurationService brokerConfigurationService) {
@@ -26,7 +26,7 @@ public class RabbitMQBrokerServiceImpl implements BrokerService {
 
     @Override
     public void send(String message, String destination) throws BrokerServiceException{
-        log.debug("Ready to send the following message to desination " + destination + "\n" + message);
+        LOG.debug("Ready to send the following message to desination " + destination + "\n" + message);
         try {
             broker.send(message, destination);
         } catch (TraceyValidatorError|TraceyIOError error) {

@@ -17,10 +17,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
-import java.net.InetAddress;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.net.UnknownHostException;
 import java.util.Dictionary;
 
 public class EiffelProtocolServiceImpl implements ProtocolService {
@@ -37,7 +35,6 @@ public class EiffelProtocolServiceImpl implements ProtocolService {
     public String getMessage(final String commmitId, final String branch, final String jiraUrl, final String jiraProjectName, final Repository repository) throws ProtocolServiceException {
         final String repoPath = applicationPropertiesService.getRepositoryDir(repository).getAbsolutePath();
         final EiffelSourceChangeCreatedEventFactory factory = new EiffelSourceChangeCreatedEventFactory(
-                getHostName(),
                 this.applicationPropertiesService.getDisplayName(),
                 this.applicationPropertiesService.getBaseUrl().toString(),
                 ((EiffelProtocolConfigurationServiceImpl) this.protocolConfigurationService).getDomainId(),
@@ -76,18 +73,5 @@ public class EiffelProtocolServiceImpl implements ProtocolService {
         gav.setArtifactId(headers.get("Bundle-Name").toString());
         gav.setVersion(headers.get("Bundle-Version").toString());
         return gav.build();
-    }
-
-    private String getHostName() {
-        String hostname = "Unknown";
-        try
-        {
-            hostname = InetAddress.getLocalHost().getHostName();
-        }
-        catch (UnknownHostException e) {
-            log.debug("Hostname can not be resolved due to the following. Use " + hostname + " as a hostname\n" + e.getMessage());
-        }
-        log.debug("Return hostname: " + hostname);
-        return hostname;
     }
 }

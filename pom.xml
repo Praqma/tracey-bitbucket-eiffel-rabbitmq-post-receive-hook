@@ -33,7 +33,7 @@
         <dependency>
             <groupId>com.github.Praqma</groupId>
             <artifactId>tracey-protocol-eiffel</artifactId>
-            <version>e70358f969</version>
+            <version>2eddc78f98</version>
             <scope>compile</scope>
         </dependency>
         <dependency>

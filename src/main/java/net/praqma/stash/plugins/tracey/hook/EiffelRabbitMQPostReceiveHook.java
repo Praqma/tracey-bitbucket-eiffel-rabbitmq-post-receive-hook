@@ -16,22 +16,6 @@ import org.slf4j.LoggerFactory;
 
 import java.util.Collection;
 
-// TODO: tests
-// TODO: documentation
-// TODO: resolve username and add it to the message Data.Author.id
-// TODO: Move GitService to proper service when I figure how to make ExportAsService annotation work
-// TODO: Move ProtocolService to proper service when I figure how to make ExportAsService annotation work
-// TODO: Move BrokerService to proper service when I figure how to make ExportAsService annotation work
-// TODO: Move BrokerConfigurationService to proper service when I figure how to make ExportAsService annotation work
-// TODO: fix configuration - global and per repo
-// TODO: add configuration validation
-// TODO: read domainId from config
-// TODO: read rabbitmq configuration from config
-// TODO: add plugin configuration service. Use it for branchFilter, jiraUrl and jiraProjectName per repo configuration
-// TODO: add support for filtering branches
-// TODO: publish plugin
-// TODO: use git notes to store eventId and then populate previous link
-
 @Scanned
 public class EiffelRabbitMQPostReceiveHook implements AsyncPostReceiveRepositoryHook, RepositorySettingsValidator
 {

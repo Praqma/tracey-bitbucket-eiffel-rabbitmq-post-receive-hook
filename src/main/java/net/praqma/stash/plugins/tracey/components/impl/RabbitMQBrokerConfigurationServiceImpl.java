@@ -1,6 +1,7 @@
 package net.praqma.stash.plugins.tracey.components.impl;
 
 import net.praqma.stash.plugins.tracey.components.api.BrokerConfigurationService;
+import net.praqma.tracey.broker.impl.rabbitmq.RabbitMQDefaults;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -13,26 +14,26 @@ public class RabbitMQBrokerConfigurationServiceImpl implements BrokerConfigurati
 
     // TODO: read this from global configuration
     public String getHost() {
-        return "localhost";
+        return RabbitMQDefaults.HOST;
     }
 
     // TODO: read this from global configuration
     public int getPort() {
-        return 5672;
+        return RabbitMQDefaults.PORT;
     }
 
     // TODO: read this from global configuration
     public String getUsername() {
-        return "guest";
+        return RabbitMQDefaults.USERNAME;
     }
 
     // TODO: read this from global configuration
     public String getPassword() {
-        return "guest";
+        return RabbitMQDefaults.PASSWORD;
     }
 
     // TODO: read this from repo configuration
     public String getExchange() {
-        return "EiffelSourceChangeCreatedEvent";
+        return RabbitMQDefaults.EXCHANGE_NAME;
     }
 }

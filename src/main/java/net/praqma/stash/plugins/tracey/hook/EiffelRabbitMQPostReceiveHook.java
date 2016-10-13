@@ -11,6 +11,7 @@ import net.praqma.stash.plugins.tracey.components.api.*;
 import net.praqma.stash.plugins.tracey.components.impl.*;
 import net.praqma.stash.plugins.tracey.exceptions.BrokerServiceException;
 import net.praqma.stash.plugins.tracey.exceptions.ProtocolServiceException;
+import net.praqma.tracey.broker.impl.rabbitmq.RabbitMQRoutingInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -47,7 +48,9 @@ public class EiffelRabbitMQPostReceiveHook implements AsyncPostReceiveRepository
                 for (String sha1:gitService.getCommitsDelta(repository, change)) {
                     // TODO: read Jira project name from the plugin config when available
                     String message = protocolService.getMessage(sha1, change.getRefId(), "http://jira.com", "myproject", repository);
-                    brokerService.send(message, ((RabbitMQBrokerConfigurationServiceImpl) brokerConfigurationService).getExchange());
+                    // TODO: read routing info from the plugin config when available
+                    RabbitMQRoutingInfo destination = new RabbitMQRoutingInfo();
+                    brokerService.send(message, destination);
                 }
             }
         } catch (BrokerServiceException|ProtocolServiceException error) {

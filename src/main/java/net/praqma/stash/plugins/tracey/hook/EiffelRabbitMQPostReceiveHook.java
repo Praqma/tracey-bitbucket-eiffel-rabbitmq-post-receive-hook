@@ -20,11 +20,25 @@ import java.util.Collection;
 @Scanned
 public class EiffelRabbitMQPostReceiveHook implements AsyncPostReceiveRepositoryHook, RepositorySettingsValidator
 {
+    // Declare inner setting class for parameters from BitBucket user menu:
+    // rabbit.url
+    // rabbit.exchange
+    // rabbit.routingkey
+    // rabbit.user
+    // rabbit.password
+//    protected class RabbitMQSettings {
+//        String rabbitmqURL;
+//        String rabbitmqExchange;
+//        String rabbitmqRoutingKey;
+//        String rabbitmqUser;
+//        String rabbitmqPwd;
+//    }
+
     private static final Logger LOG = LoggerFactory.getLogger(EiffelRabbitMQPostReceiveHook.class.getName());
     // TODO: all services below should be declared as actual services using ExportAsService. This is a shortcut because I can't make spring to discover them
-    private final BrokerConfigurationService brokerConfigurationService;
+    //private final BrokerConfigurationService brokerConfigurationService;
     private final ProtocolConfigurationService protocolConfigurationService;
-    private final BrokerService brokerService;
+    //private final BrokerService brokerService;
     private final ProtocolService protocolService;
     private final GitService gitService;
 
@@ -33,9 +47,9 @@ public class EiffelRabbitMQPostReceiveHook implements AsyncPostReceiveRepository
         // TODO: When exported all serives below should be brought in using @ComponentImport as it is done for the system services
         // TODO: Also, applicationPropertiesService and commitService will be not needed here since they will be consumed by corresponding services
         this.gitService = new GitServiceImpl(commitService);
-        this.brokerConfigurationService = new RabbitMQBrokerConfigurationServiceImpl();
+        //this.brokerConfigurationService = new RabbitMQBrokerConfigurationServiceImpl(context);
+        //this.brokerService = new RabbitMQBrokerServiceImpl(brokerConfigurationService);
         this.protocolConfigurationService = new EiffelProtocolConfigurationServiceImpl();
-        this.brokerService = new RabbitMQBrokerServiceImpl(brokerConfigurationService);
         this.protocolService = new EiffelProtocolServiceImpl(applicationPropertiesService, protocolConfigurationService);
     }
 
@@ -43,6 +57,13 @@ public class EiffelRabbitMQPostReceiveHook implements AsyncPostReceiveRepository
     public void postReceive(RepositoryHookContext context, Collection<RefChange> refChanges)
     {
         final Repository repository = context.getRepository();
+
+        RabbitMQBrokerConfigurationServiceImpl brokerConfigurationService = new RabbitMQBrokerConfigurationServiceImpl(context);
+        RabbitMQBrokerServiceImpl brokerService = new RabbitMQBrokerServiceImpl(brokerConfigurationService);
+
+        System.out.print("Host: " + brokerConfigurationService.getHost());
+        System.out.print("User: " + brokerConfigurationService.getUsername());
+
         try {
             for (RefChange change:refChanges) {
                 for (String sha1:gitService.getCommitsDelta(repository, change)) {

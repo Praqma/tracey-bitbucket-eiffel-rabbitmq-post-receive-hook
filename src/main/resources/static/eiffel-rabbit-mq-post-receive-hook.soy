@@ -19,15 +19,6 @@
   {/call}
 
   {call aui.form.textareaField}
-      {param id: 'rabbit.exchange.type' /}
-      {param labelContent: 'RabbitMQ exchange type' /}
-      {param value: $config['rabbit.exchange.type'] /}
-      {param descriptionText: 'RabbitMQ exchange type.' /}
-      {param errorTexts: $errors ? $errors['rabbit.exchange.type'] : null /}
-      {param rows: '1' /}
-  {/call}
-
-  {call aui.form.textareaField}
     {param id: 'rabbit.exchange.name' /}
     {param labelContent: 'RabbitMQ exchange name' /}
     {param value: $config['rabbit.exchange.name'] /}
@@ -35,6 +26,15 @@
     {param errorTexts: $errors ? $errors['rabbit.exchange.name'] : null /}
     {param rows: '1' /}
   {/call}
+
+  {call aui.form.textareaField}
+     {param id: 'rabbit.exchange.type' /}
+     {param labelContent: 'RabbitMQ exchange type' /}
+     {param value: $config['rabbit.exchange.type'] /}
+     {param descriptionText: 'RabbitMQ exchange type.' /}
+     {param errorTexts: $errors ? $errors['rabbit.exchange.type'] : null /}
+     {param rows: '1' /}
+    {/call}
 
   {call aui.form.textareaField}
     {param id: 'rabbit.routingkey' /}

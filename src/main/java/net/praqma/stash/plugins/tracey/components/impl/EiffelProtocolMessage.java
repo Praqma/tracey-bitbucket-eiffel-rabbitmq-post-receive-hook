@@ -10,6 +10,8 @@ import net.praqma.tracey.protocol.eiffel.models.Models;
 import net.praqma.utils.parsers.cmg.api.CommitMessageParser;
 import net.praqma.utils.parsers.cmg.impl.Jira;
 import org.osgi.framework.FrameworkUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.IOException;
@@ -18,10 +20,9 @@ import java.net.URI;
 import java.net.URL;
 import java.util.Dictionary;
 
-import static org.eclipse.jetty.io.nio.SelectorManager.LOG;
-
 public class EiffelProtocolMessage {
 
+    private static final Logger LOG = LoggerFactory.getLogger(EiffelProtocolMessage.class);
     private String commitId;
     private String branch;
     private String project;

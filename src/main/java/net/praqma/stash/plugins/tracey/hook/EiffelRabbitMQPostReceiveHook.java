@@ -49,6 +49,7 @@ public class EiffelRabbitMQPostReceiveHook implements AsyncPostReceiveRepository
                             .withJiraProjectName("myproject")
                             .withJiraUrl("http://jira.com") // TODO: read Jira project name from the plugin config when available
                             .withRepoPath(applicationPropertiesService.getRepositoryDir(repository))
+                            .withRepository(repository)
                             .withDisplayName(applicationPropertiesService.getDisplayName())
                             .withBaseUrl(applicationPropertiesService.getBaseUrl())
                             .withDomainId(protocolConfigurationService.getDomainId())

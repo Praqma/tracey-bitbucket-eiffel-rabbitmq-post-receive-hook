@@ -1,5 +1,6 @@
 package net.praqma.stash.plugins.tracey.components.impl;
 
+import com.atlassian.stash.repository.Repository;
 import com.google.protobuf.InvalidProtocolBufferException;
 import com.google.protobuf.util.JsonFormat;
 import net.praqma.stash.plugins.tracey.exceptions.ProtocolServiceException;
@@ -26,11 +27,10 @@ public class EiffelProtocolMessage {
     private String project;
     private String jiraUrl;
     private File repoPath;
+    private Repository repository;
     private String displayName;
     private URI baseUrl;
     private String domainId;
-    private String repoSlug;
-    private String repoProjectKey;
 
     public static EiffelProtocolMessage builder() {
         return new EiffelProtocolMessage();
@@ -64,6 +64,10 @@ public class EiffelProtocolMessage {
         return this;
     }
 
+    public EiffelProtocolMessage withRepository(Repository repository) {
+        this.repository = repository;
+        return this;
+    }
     public EiffelProtocolMessage withDisplayName(String displayName) {
         this.displayName = displayName;
         return this;
@@ -76,16 +80,6 @@ public class EiffelProtocolMessage {
 
     public EiffelProtocolMessage withDomainId(String domainId) {
         this.domainId = domainId;
-        return this;
-    }
-
-    public EiffelProtocolMessage repoSlug(String repoSlug) {
-        this.repoSlug = repoSlug;
-        return this;
-    }
-
-    public EiffelProtocolMessage repoProjectKey(String repoProjectKey) {
-        this.repoProjectKey = repoProjectKey;
         return this;
     }
 
@@ -113,8 +107,8 @@ public class EiffelProtocolMessage {
         LOG.debug("Generated message before GitIdentifier update: " + event.toString());
         EiffelSourceChangeCreatedEventOuterClass.EiffelSourceChangeCreatedEvent.EiffelSourceChangeCreatedEventData.Builder data = event.getData().toBuilder();
         Models.Data.GitIdentifier.Builder git = data.getGitIdentifier().toBuilder();
-        git.setRepoName(repoSlug);
-        git.setRepoUri(baseUrl + "/scm/" + repoProjectKey + "/" + repoSlug);
+        git.setRepoName(repository.getSlug());
+        git.setRepoUri(baseUrl + "/scm/" + repository.getProject().getKey() + "/" + repository.getSlug());
         LOG.debug("Set GitIdentifier to " + git.toString());
         event.setData(data.setGitIdentifier(git));
         try {

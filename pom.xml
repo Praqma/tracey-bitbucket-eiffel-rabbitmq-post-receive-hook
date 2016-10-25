@@ -170,7 +170,19 @@
                         <Atlassian-Plugin-Key>${atlassian.plugin.key}</Atlassian-Plugin-Key>
                         <!-- Add package to export here -->
                         <!-- Add package import here -->
-                        <Import-Package>org.springframework.osgi.*;resolution:="optional", org.eclipse.gemini.blueprint.*;resolution:="optional", com.jcraft.*;resolution:="optional", org.apache.*;resolution:="optional", sun.*;resolution:="optional", com.thoughtworks.*;resolution:="optional", groovyjarjarasm.asm.tree.*;resolution:="optional", jline;resolution:="optional", jline.*;resolution:="optional", org.junit;resolution:="optional", junit.*;resolution:="optional", org.fusesource.*;resolution:="optional", *</Import-Package>
+                        <Import-Package>
+                            org.springframework.osgi.*;resolution:="optional",
+                            org.eclipse.gemini.blueprint.*;resolution:="optional",
+                            com.jcraft.*;resolution:="optional",
+                            org.apache.*;resolution:="optional",
+                            sun.*;resolution:="optional",
+                            com.thoughtworks.*;resolution:="optional",
+                            groovyjarjarasm.asm.tree.*;resolution:="optional",
+                            jline;resolution:="optional",
+                            jline.*;resolution:="optional",
+                            org.junit;resolution:="optional",
+                            junit.*;resolution:="optional",
+                            org.fusesource.*;resolution:="optional", *</Import-Package>
                         <!-- Ensure plugin is spring powered -->
                         <Spring-Context>*</Spring-Context>
                     </instructions>

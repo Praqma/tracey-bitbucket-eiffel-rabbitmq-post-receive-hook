@@ -12,7 +12,8 @@ public class RabbitMQBrokerConfigurationServiceImpl implements BrokerConfigurati
     private String host = RabbitMQDefaults.HOST;
     private String user = RabbitMQDefaults.USERNAME;
     private String pwd = RabbitMQDefaults.PASSWORD;
-    private String exchange = RabbitMQDefaults.EXCHANGE_NAME;
+    private String exchangeName = RabbitMQDefaults.EXCHANGE_NAME;
+    private String exchangeType = RabbitMQDefaults.EXCHANGE_TYPE;
     private String routingkey = "";
     private int port = RabbitMQDefaults.PORT;
 
@@ -20,35 +21,33 @@ public class RabbitMQBrokerConfigurationServiceImpl implements BrokerConfigurati
         host = context.getSettings().getString("rabbit.url", host);
         user = context.getSettings().getString("rabbit.user", user);
         pwd = context.getSettings().getString("rabbit.password", pwd);
-        exchange = context.getSettings().getString("rabbit.exchange", exchange);
+        exchangeName = context.getSettings().getString("rabbit.exchange.name", exchangeName);
+        exchangeType = context.getSettings().getString("rabbit.exchange.type", exchangeType);
         routingkey = context.getSettings().getString("rabbit.routingkey", routingkey);
         port = context.getSettings().getInt("", port);
 
-        LOG.warn("Implement me!");
+        LOG.info("RabbitMQ broker configured");
     }
 
-    // TODO: read this from global configuration
     public String getHost() {
         return host;
     }
 
-    // TODO: read this from global configuration
     public int getPort() {
         return port;
     }
 
-    // TODO: read this from global configuration
     public String getUsername() {
         return user;
     }
 
-    // TODO: read this from global configuration
     public String getPassword() {
         return pwd;
     }
 
-    // TODO: read this from repo configuration
-    public String getExchange() {
-        return exchange;
+    public String getExchangeName() {
+        return exchangeName;
     }
+
+    public String getExchangeType() { return exchangeType; }
 }

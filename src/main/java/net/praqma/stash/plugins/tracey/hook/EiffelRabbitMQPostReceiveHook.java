@@ -18,69 +18,52 @@ import org.slf4j.LoggerFactory;
 import java.util.Collection;
 
 @Scanned
-public class EiffelRabbitMQPostReceiveHook implements AsyncPostReceiveRepositoryHook, RepositorySettingsValidator
-{
-    // Declare inner setting class for parameters from BitBucket user menu:
-    // rabbit.url
-    // rabbit.exchange
-    // rabbit.routingkey
-    // rabbit.user
-    // rabbit.password
-//    protected class RabbitMQSettings {
-//        String rabbitmqURL;
-//        String rabbitmqExchange;
-//        String rabbitmqRoutingKey;
-//        String rabbitmqUser;
-//        String rabbitmqPwd;
-//    }
+public class EiffelRabbitMQPostReceiveHook implements AsyncPostReceiveRepositoryHook, RepositorySettingsValidator {
 
     private static final Logger LOG = LoggerFactory.getLogger(EiffelRabbitMQPostReceiveHook.class.getName());
     // TODO: all services below should be declared as actual services using ExportAsService. This is a shortcut because I can't make spring to discover them
-    //private final BrokerConfigurationService brokerConfigurationService;
-    private final ProtocolConfigurationService protocolConfigurationService;
-    //private final BrokerService brokerService;
-    private final ProtocolService protocolService;
+    private final ApplicationPropertiesService applicationPropertiesService;
     private final GitService gitService;
 
-    public EiffelRabbitMQPostReceiveHook (@ComponentImport final ApplicationPropertiesService applicationPropertiesService,
-                                          @ComponentImport final CommitService commitService) {
-        // TODO: When exported all serives below should be brought in using @ComponentImport as it is done for the system services
-        // TODO: Also, applicationPropertiesService and commitService will be not needed here since they will be consumed by corresponding services
+    public EiffelRabbitMQPostReceiveHook(@ComponentImport final ApplicationPropertiesService applicationPropertiesService,
+                                         @ComponentImport final CommitService commitService) {
+        this.applicationPropertiesService = applicationPropertiesService;
         this.gitService = new GitServiceImpl(commitService);
-        //this.brokerConfigurationService = new RabbitMQBrokerConfigurationServiceImpl(context);
-        //this.brokerService = new RabbitMQBrokerServiceImpl(brokerConfigurationService);
-        this.protocolConfigurationService = new EiffelProtocolConfigurationServiceImpl();
-        this.protocolService = new EiffelProtocolServiceImpl(applicationPropertiesService, protocolConfigurationService);
     }
 
     @Override
-    public void postReceive(RepositoryHookContext context, Collection<RefChange> refChanges)
-    {
+    public void postReceive(RepositoryHookContext context, Collection<RefChange> refChanges) {
+
+        final EiffelProtocolConfigurationServiceImpl protocolConfigurationService = new EiffelProtocolConfigurationServiceImpl(); // ???
         final Repository repository = context.getRepository();
 
-        RabbitMQBrokerConfigurationServiceImpl brokerConfigurationService = new RabbitMQBrokerConfigurationServiceImpl(context);
-        RabbitMQBrokerServiceImpl brokerService = new RabbitMQBrokerServiceImpl(brokerConfigurationService);
-
-        System.out.print("Host: " + brokerConfigurationService.getHost());
-        System.out.print("User: " + brokerConfigurationService.getUsername());
+        final RabbitMQBrokerConfigurationServiceImpl brokerConfigurationService = new RabbitMQBrokerConfigurationServiceImpl(context);
+        final RabbitMQBrokerServiceImpl brokerService = new RabbitMQBrokerServiceImpl(brokerConfigurationService);
 
         try {
-            for (RefChange change:refChanges) {
-                for (String sha1:gitService.getCommitsDelta(repository, change)) {
-                    // TODO: read Jira project name from the plugin config when available
-                    String message = protocolService.getMessage(sha1, change.getRefId(), "http://jira.com", "myproject", repository);
+            for (RefChange change : refChanges) {
+                for (String sha1 : gitService.getCommitsDelta(repository, change)) {
+                    String message = EiffelProtocolMessage.builder()
+                            .withCommitId(sha1)
+                            .withBranch(change.getRefId())
+                            .withJiraProjectName("myproject")
+                            .withJiraUrl("http://jira.com") // TODO: read Jira project name from the plugin config when available
+                            .withRepoPath(applicationPropertiesService.getRepositoryDir(repository))
+                            .withDisplayName(applicationPropertiesService.getDisplayName())
+                            .withBaseUrl(applicationPropertiesService.getBaseUrl())
+                            .withDomainId(protocolConfigurationService.getDomainId())
+                            .build();
                     // TODO: read routing info from the plugin config when available
                     RabbitMQRoutingInfo destination = new RabbitMQRoutingInfo();
                     brokerService.send(message, destination);
                 }
             }
-        } catch (BrokerServiceException|ProtocolServiceException error) {
+        } catch (BrokerServiceException | ProtocolServiceException error) {
             LOG.error("Can't send message notification about new commit for repository " + repository.getName(), error);
         }
     }
 
     @Override
-    public void validate(Settings settings, SettingsValidationErrors errors, Repository repository)
-    {
+    public void validate(Settings settings, SettingsValidationErrors errors, Repository repository) {
     }
 }

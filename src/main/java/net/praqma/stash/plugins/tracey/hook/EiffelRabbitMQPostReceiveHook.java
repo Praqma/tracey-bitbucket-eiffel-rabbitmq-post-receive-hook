@@ -3,15 +3,18 @@ package net.praqma.stash.plugins.tracey.hook;
 import com.atlassian.plugin.spring.scanner.annotation.component.Scanned;
 import com.atlassian.plugin.spring.scanner.annotation.imports.ComponentImport;
 import com.atlassian.stash.commit.CommitService;
-import com.atlassian.stash.hook.repository.*;
-import com.atlassian.stash.repository.*;
+import com.atlassian.stash.hook.repository.AsyncPostReceiveRepositoryHook;
+import com.atlassian.stash.hook.repository.RepositoryHookContext;
+import com.atlassian.stash.repository.RefChange;
+import com.atlassian.stash.repository.Repository;
 import com.atlassian.stash.server.ApplicationPropertiesService;
-import com.atlassian.stash.setting.*;
-import net.praqma.stash.plugins.tracey.components.api.*;
+import com.atlassian.stash.setting.RepositorySettingsValidator;
+import com.atlassian.stash.setting.Settings;
+import com.atlassian.stash.setting.SettingsValidationErrors;
+import net.praqma.stash.plugins.tracey.components.api.GitService;
 import net.praqma.stash.plugins.tracey.components.impl.*;
 import net.praqma.stash.plugins.tracey.exceptions.BrokerServiceException;
 import net.praqma.stash.plugins.tracey.exceptions.ProtocolServiceException;
-import net.praqma.tracey.broker.impl.rabbitmq.RabbitMQRoutingInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -38,6 +41,7 @@ public class EiffelRabbitMQPostReceiveHook implements AsyncPostReceiveRepository
         final Repository repository = context.getRepository();
 
         final RabbitMQBrokerConfigurationServiceImpl brokerConfigurationService = new RabbitMQBrokerConfigurationServiceImpl(context);
+        final RabbitMQRoutingInfoConfigService routingInfoConfigService = new RabbitMQRoutingInfoConfigService(context);
         final RabbitMQBrokerServiceImpl brokerService = new RabbitMQBrokerServiceImpl(brokerConfigurationService);
 
         try {
@@ -54,9 +58,7 @@ public class EiffelRabbitMQPostReceiveHook implements AsyncPostReceiveRepository
                             .withBaseUrl(applicationPropertiesService.getBaseUrl())
                             .withDomainId(protocolConfigurationService.getDomainId())
                             .build();
-                    // TODO: read routing info from the plugin config when available
-                    RabbitMQRoutingInfo destination = new RabbitMQRoutingInfo();
-                    brokerService.send(message, destination);
+                    brokerService.send(message, routingInfoConfigService.destination());
                 }
             }
         } catch (BrokerServiceException | ProtocolServiceException error) {

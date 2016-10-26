@@ -46,6 +46,15 @@
   {/call}
 
   {call aui.form.textareaField}
+    {param id: 'rabbit.deliverymode' /}
+    {param labelContent: 'RabbitMQ delivery mode' /}
+    {param value: $config['rabbitmq.deliverymode'] /}
+    {param descriptionText: 'RabbitMQ delivery mode. Non-persistent (1) or persistent (2)' /}
+    {param errorTexts: $errors ? $errors['rabbit.deliverymode'] : null /}
+    {param rows: '1' /}
+  {/call}
+
+  {call aui.form.textareaField}
     {param id: 'rabbit.user' /}
     {param labelContent: 'RabbitMQ user name' /}
     {param value: $config['rabbit.user'] /}

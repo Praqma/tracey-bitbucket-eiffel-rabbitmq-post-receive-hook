@@ -15,7 +15,7 @@
     {param value: $config['rabbit.url'] /}
     {param descriptionText: 'RabbitMQ server address to connect to.' /}
     {param errorTexts: $errors ? $errors['rabbit.url'] : null /}
-    {param rows: '4' /}
+    {param rows: '1' /}
   {/call}
 
   {call aui.form.textareaField}
@@ -60,7 +60,7 @@
     {param value: $config['rabbit.user'] /}
     {param descriptionText: 'User name to use when connecting to RabbitMQ server.' /}
     {param errorTexts: $errors ? $errors['rabbit.user'] : null /}
-    {param rows: '4' /}
+    {param rows: '1' /}
   {/call}
 
   {call aui.form.textareaField}
@@ -69,6 +69,16 @@
     {param value: $config['rabbit.password'] /}
     {param descriptionText: 'Password to use when connecting to RabbitMQ server.' /}
     {param errorTexts: $errors ? $errors['rabbit.password'] : null /}
-    {param rows: '4' /}
+    {param rows: '1' /}
   {/call}
+
+  {call aui.form.textareaField}
+      {param id: 'domainid' /}
+      {param labelContent: 'DomainId for Eiffel message' /}
+      {param value: $config['domainid'] /}
+      {param descriptionText: 'DomainId for Eiffel message' /}
+      {param errorTexts: $errors ? $errors['domainid'] : null /}
+      {param rows: '1' /}
+    {/call}
+
 {/template}

@@ -24,7 +24,6 @@ import java.util.Collection;
 public class EiffelRabbitMQPostReceiveHook implements AsyncPostReceiveRepositoryHook, RepositorySettingsValidator {
 
     private static final Logger LOG = LoggerFactory.getLogger(EiffelRabbitMQPostReceiveHook.class.getName());
-    // TODO: all services below should be declared as actual services using ExportAsService. This is a shortcut because I can't make spring to discover them
     private final ApplicationPropertiesService applicationPropertiesService;
     private final GitService gitService;
 
@@ -37,13 +36,12 @@ public class EiffelRabbitMQPostReceiveHook implements AsyncPostReceiveRepository
     @Override
     public void postReceive(RepositoryHookContext context, Collection<RefChange> refChanges) {
 
-        final EiffelProtocolConfigurationServiceImpl protocolConfigurationService = new EiffelProtocolConfigurationServiceImpl(); // ???
+        final EiffelProtocolConfigurationServiceImpl protocolConfigurationService = new EiffelProtocolConfigurationServiceImpl(context); // ???
         final Repository repository = context.getRepository();
 
         final RabbitMQBrokerConfigurationServiceImpl brokerConfigurationService = new RabbitMQBrokerConfigurationServiceImpl(context);
         final RabbitMQRoutingInfoConfigService routingInfoConfigService = new RabbitMQRoutingInfoConfigService(context);
         final RabbitMQBrokerServiceImpl brokerService = new RabbitMQBrokerServiceImpl(brokerConfigurationService);
-
         try {
             for (RefChange change : refChanges) {
                 for (String sha1 : gitService.getCommitsDelta(repository, change)) {

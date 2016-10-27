@@ -25,6 +25,7 @@ public class RabbitMQRoutingInfoConfigService {
         exchangeType = context.getSettings().getString("rabbit.exchange.type", exchangeType);
         routingKey = context.getSettings().getString("rabbit.routingkey", routingKey);
         deliveryMode = context.getSettings().getInt("rabbit.deliverymode", deliveryMode);
+        LOG.debug("Routing info configured");
     }
 
     public RabbitMQRoutingInfo destination(){
@@ -47,7 +48,6 @@ public class RabbitMQRoutingInfoConfigService {
     }
 
     public int getDeliveryMode() {
-
         return deliveryMode;
     }
 }

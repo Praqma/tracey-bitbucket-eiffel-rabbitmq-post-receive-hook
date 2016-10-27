@@ -85,7 +85,7 @@ public class EiffelProtocolMessage {
     }
 
     public String build() throws ProtocolServiceException {
-        // final String repoPath = applicationPropertiesService.getRepositoryDir(repository).getAbsolutePath();
+
         final EiffelSourceChangeCreatedEventFactory factory = new EiffelSourceChangeCreatedEventFactory(
                 displayName,
                 baseUrl.toString(),

@@ -48,14 +48,15 @@ public class EiffelRabbitMQPostReceiveHook implements AsyncPostReceiveRepository
                     String message = EiffelProtocolMessage.builder()
                             .withCommitId(sha1)
                             .withBranch(change.getRefId())
-                            .withJiraProjectName("myproject")
-                            .withJiraUrl("http://jira.com") // TODO: read Jira project name from the plugin config when available
+                            .withJiraProjectName(protocolConfigurationService.getJiraProjectName())
+                            .withJiraUrl(protocolConfigurationService.getJiraUrl())
                             .withRepoPath(applicationPropertiesService.getRepositoryDir(repository))
                             .withRepository(repository)
                             .withDisplayName(applicationPropertiesService.getDisplayName())
                             .withBaseUrl(applicationPropertiesService.getBaseUrl())
                             .withDomainId(protocolConfigurationService.getDomainId())
                             .build();
+                    LOG.debug("Message to send : " + message);
                     brokerService.send(message, routingInfoConfigService.destination());
                 }
             }

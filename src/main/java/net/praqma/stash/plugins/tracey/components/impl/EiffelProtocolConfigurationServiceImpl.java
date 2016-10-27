@@ -8,13 +8,20 @@ import org.slf4j.LoggerFactory;
 public class EiffelProtocolConfigurationServiceImpl implements ProtocolConfigurationService {
     private static final Logger LOG = LoggerFactory.getLogger(EiffelProtocolConfigurationServiceImpl.class);
     private String domainId = "domainId";
+    private String jiraUrl = "http://jira.com";
+    private String jiraProjectName = "myproject";
 
     public EiffelProtocolConfigurationServiceImpl(RepositoryHookContext context) {
         domainId = context.getSettings().getString("domainid", domainId);
-        LOG.info("Eiffel information from plugin context");
+        jiraUrl = context.getSettings().getString("jira.url", jiraUrl);
+        jiraProjectName = context.getSettings().getString("jira.project", jiraProjectName);
+        LOG.info("Got domain ID: " + domainId);
     }
 
-    public String getDomainId() {
-        return domainId;
-    }
+    public String getDomainId() { return domainId; }
+
+    public String getJiraUrl() { return jiraUrl; }
+
+    public String getJiraProjectName() { return jiraProjectName; }
+
 }

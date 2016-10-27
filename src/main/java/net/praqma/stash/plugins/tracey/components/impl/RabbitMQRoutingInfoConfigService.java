@@ -25,7 +25,8 @@ public class RabbitMQRoutingInfoConfigService {
         exchangeType = context.getSettings().getString("rabbit.exchange.type", exchangeType);
         routingKey = context.getSettings().getString("rabbit.routingkey", routingKey);
         deliveryMode = context.getSettings().getInt("rabbit.deliverymode", deliveryMode);
-        LOG.debug("Routing info configured");
+        LOG.debug("Routing info configured for exchange name: " + exchangeName);
+        LOG.debug("Routing info configured for exchange type: " + exchangeType);
     }
 
     public RabbitMQRoutingInfo destination(){

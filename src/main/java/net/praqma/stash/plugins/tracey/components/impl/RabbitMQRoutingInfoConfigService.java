@@ -21,10 +21,10 @@ public class RabbitMQRoutingInfoConfigService {
     private int deliveryMode = RabbitMQDefaults.DELEIVERY_MODE;
 
     public RabbitMQRoutingInfoConfigService(RepositoryHookContext context) {
-        exchangeName = context.getSettings().getString("rabbit.exchange.name", exchangeName);
-        exchangeType = context.getSettings().getString("rabbit.exchange.type", exchangeType);
-        routingKey = context.getSettings().getString("rabbit.routingkey", routingKey);
-        deliveryMode = context.getSettings().getInt("rabbit.deliverymode", deliveryMode);
+        exchangeName = context.getSettings().getString("rabbit.exchange.name");
+        exchangeType = context.getSettings().getString("rabbit.exchange.type");
+        routingKey = context.getSettings().getString("rabbit.routingkey");
+        deliveryMode = context.getSettings().getInt("rabbit.deliverymode");
         LOG.debug("Routing info configured for exchange name: " + exchangeName);
         LOG.debug("Routing info configured for exchange type: " + exchangeType);
     }

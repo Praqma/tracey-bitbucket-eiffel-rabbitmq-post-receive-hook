@@ -42,6 +42,7 @@ public class EiffelRabbitMQPostReceiveHook implements AsyncPostReceiveRepository
         final RabbitMQBrokerConfigurationServiceImpl brokerConfigurationService = new RabbitMQBrokerConfigurationServiceImpl(context);
         final RabbitMQRoutingInfoConfigService routingInfoConfigService = new RabbitMQRoutingInfoConfigService(context);
         final RabbitMQBrokerServiceImpl brokerService = new RabbitMQBrokerServiceImpl(brokerConfigurationService);
+        System.out.print("try to message");
         try {
             for (RefChange change : refChanges) {
                 for (String sha1 : gitService.getCommitsDelta(repository, change)) {
@@ -58,9 +59,11 @@ public class EiffelRabbitMQPostReceiveHook implements AsyncPostReceiveRepository
                             .build();
                     LOG.debug("Message to send : " + message);
                     brokerService.send(message, routingInfoConfigService.destination());
+                    LOG.debug("Message sent : " + message);
                 }
             }
         } catch (BrokerServiceException | ProtocolServiceException error) {
+            System.out.print("Message was not sent");
             LOG.error("Can't send message notification about new commit for repository " + repository.getName(), error);
         }
     }

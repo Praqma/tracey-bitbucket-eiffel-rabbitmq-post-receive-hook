@@ -15,10 +15,10 @@ public class RabbitMQBrokerConfigurationServiceImpl implements BrokerConfigurati
     private int port = RabbitMQDefaults.PORT;
 
     public RabbitMQBrokerConfigurationServiceImpl(RepositoryHookContext context) {
-        host = context.getSettings().getString("rabbit.url", host);
-        user = context.getSettings().getString("rabbit.user", user);
-        pwd = context.getSettings().getString("rabbit.password", pwd);
-        port = context.getSettings().getInt("5672", port);
+        host = context.getSettings().getString("rabbit.url");
+        user = context.getSettings().getString("rabbit.user");
+        pwd = context.getSettings().getString("rabbit.password");
+        port = context.getSettings().getInt("rabbit.port");
         LOG.debug("RabbitMQ broker configured for host: " + host);
         LOG.debug("RabbitMQ broker configured for user: " + user);
     }

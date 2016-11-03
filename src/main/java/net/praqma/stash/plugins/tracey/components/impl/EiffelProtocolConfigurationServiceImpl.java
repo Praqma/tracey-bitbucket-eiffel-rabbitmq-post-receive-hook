@@ -12,9 +12,9 @@ public class EiffelProtocolConfigurationServiceImpl implements ProtocolConfigura
     private String jiraProjectName = "myproject";
 
     public EiffelProtocolConfigurationServiceImpl(RepositoryHookContext context) {
-        domainId = context.getSettings().getString("domainid", domainId);
-        jiraUrl = context.getSettings().getString("jira.url", jiraUrl);
-        jiraProjectName = context.getSettings().getString("jira.project", jiraProjectName);
+        domainId = context.getSettings().getString("domainid");
+        jiraUrl = context.getSettings().getString("jira.url");
+        jiraProjectName = context.getSettings().getString("jira.project");
         LOG.info("Got domain ID: " + domainId);
     }
 

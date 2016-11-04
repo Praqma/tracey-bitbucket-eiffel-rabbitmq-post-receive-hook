@@ -13,7 +13,7 @@
     {param id: 'rabbit.url' /}
     {param labelContent: 'RabbitMQ server address' /}
     {param value: $config['rabbit.url'] ? $config['rabbit.url'] : 'localhost' /}
-    {param descriptionText: 'RabbitMQ server address. URL or domain name'/}
+    {param descriptionText: 'RabbitMQ server address. URL or domain name, should not contain http://'/}
     {param errorTexts: $errors ? $errors['rabbit.url'] : null /}
     {param rows: '1' /}
   {/call}

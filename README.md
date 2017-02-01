@@ -1,3 +1,6 @@
+---
+maintainer: andrey9kin
+---
 # Post receive hook to send Eiffel messages using RabbitMQ message broker
 
 This is a prof of concept version of the plugin and was only tested using Bitbucket running in development mode

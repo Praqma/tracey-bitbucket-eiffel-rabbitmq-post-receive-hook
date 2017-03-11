@@ -12,45 +12,99 @@
   {call aui.form.textareaField}
     {param id: 'rabbit.url' /}
     {param labelContent: 'RabbitMQ server address' /}
-    {param value: $config['rabbit.url'] /}
-    {param descriptionText: 'RabbitMQ server address to connect to.' /}
+    {param value: $config['rabbit.url'] ? $config['rabbit.url'] : 'localhost' /}
+    {param descriptionText: 'RabbitMQ server address. URL or domain name, should not contain http://'/}
     {param errorTexts: $errors ? $errors['rabbit.url'] : null /}
-    {param rows: '4' /}
+    {param rows: '1' /}
   {/call}
 
   {call aui.form.textareaField}
-    {param id: 'rabbit.exchange' /}
-    {param labelContent: 'RabbitMQ exchange name' /}
-    {param value: $config['rabbit.exchange'] /}
-    {param descriptionText: 'RabbitMQ exchange names to send messages to.' /}
-    {param errorTexts: $errors ? $errors['rabbit.exchange'] : null /}
-    {param rows: '4' /}
-  {/call}
-
-  {call aui.form.textareaField}
-    {param id: 'rabbit.routingkey' /}
-    {param labelContent: 'RabbitMQ routing key' /}
-    {param value: $config['rabbit.routingkey'] /}
-    {param descriptionText: 'RabbitMQ routing key to use when sending messages.' /}
-    {param errorTexts: $errors ? $errors['rabbit.routingkey'] : null /}
-    {param rows: '4' /}
+    {param id: 'rabbit.port' /}
+    {param labelContent: 'RabbitMQ server port' /}
+    {param value: $config['rabbit.port'] ? $config['rabbit.port'] : '5672' /}
+    {param descriptionText: 'RabbitMQ server port. Default: 5672' /}
+    {param errorTexts: $errors ? $errors['rabbit.port'] : null /}
+    {param rows: '1' /}
   {/call}
 
   {call aui.form.textareaField}
     {param id: 'rabbit.user' /}
     {param labelContent: 'RabbitMQ user name' /}
-    {param value: $config['rabbit.user'] /}
+    {param value: $config['rabbit.user'] ? $config['rabbit.user'] : 'guest' /}
     {param descriptionText: 'User name to use when connecting to RabbitMQ server.' /}
     {param errorTexts: $errors ? $errors['rabbit.user'] : null /}
-    {param rows: '4' /}
+    {param rows: '1' /}
   {/call}
 
   {call aui.form.textareaField}
     {param id: 'rabbit.password' /}
     {param labelContent: 'RabbitMQ password' /}
-    {param value: $config['rabbit.password'] /}
-    {param descriptionText: 'Password to use when connecting to RabbitMQ server.' /}
+    {param value: $config['rabbit.password'] ? $config['rabbit.password'] : 'guest' /}
+    {param descriptionText: 'Password to use when connecting to RabbitMQ server' /}
     {param errorTexts: $errors ? $errors['rabbit.password'] : null /}
-    {param rows: '4' /}
+    {param rows: '1' /}
+  {/call}
+
+  {call aui.form.textareaField}
+    {param id: 'rabbit.exchange.name' /}
+    {param labelContent: 'RabbitMQ exchange name' /}
+    {param value: $config['rabbit.exchange.name'] ? $config['rabbit.exchange.name'] : 'tracey' /}
+    {param descriptionText: 'RabbitMQ exchange names to send messages to' /}
+    {param errorTexts: $errors ? $errors['rabbit.exchange.name'] : null /}
+    {param rows: '1' /}
+  {/call}
+
+  {call aui.form.textareaField}
+    {param id: 'rabbit.exchange.type' /}
+    {param labelContent: 'RabbitMQ exchange type' /}
+    {param value: $config['rabbit.exchange.type'] ? $config['rabbit.exchange.type'] : 'topic' /}
+    {param descriptionText: 'RabbitMQ exchange type: topic, direct, fanout or headers' /}
+    {param errorTexts: $errors ? $errors['rabbit.exchange.type'] : null /}
+    {param rows: '1' /}
+   {/call}
+
+  {call aui.form.textareaField}
+    {param id: 'rabbit.routingkey' /}
+    {param labelContent: 'RabbitMQ routing key' /}
+    {param value: $config['rabbit.routingkey'] ? $config['rabbit.routingkey'] : null /}
+    {param descriptionText: 'RabbitMQ routing key to use when sending messages.' /}
+    {param errorTexts: $errors ? $errors['rabbit.routingkey'] : null /}
+    {param rows: '1' /}
+  {/call}
+
+  {call aui.form.textareaField}
+    {param id: 'rabbit.deliverymode' /}
+    {param labelContent: 'RabbitMQ message delivery mode' /}
+    {param value: $config['rabbit.deliverymode'] ? $config['rabbit.deliverymode'] : '1' /}
+    {param descriptionText: 'RabbitMQ message delivery mode.' /}
+    {param errorTexts: $errors ? $errors['rabbit.deliverymode'] : null /}
+    {param rows: '1' /}
+  {/call}
+
+  {call aui.form.textareaField}
+    {param id: 'domainid' /}
+    {param labelContent: 'DomainId for Eiffel message' /}
+    {param value: $config['domainid'] ? $config['domainid'] : 'domainID' /}
+    {param descriptionText: 'DomainId for Eiffel message' /}
+    {param errorTexts: $errors ? $errors['domainid'] : null /}
+    {param rows: '1' /}
+  {/call}
+
+  {call aui.form.textareaField}
+     {param id: 'jira.url' /}
+     {param labelContent: 'JIRA url' /}
+     {param value: $config['jira.url'] ? $config['jira.url'] : 'http://jira.com' /}
+     {param descriptionText: 'JIRA url for the project' /}
+     {param errorTexts: $errors ? $errors['jira.url'] : null /}
+     {param rows: '1' /}
+  {/call}
+
+  {call aui.form.textareaField}
+      {param id: 'jira.project' /}
+      {param labelContent: 'JIRA project name' /}
+      {param value: $config['jira.project'] ? $config['jira.project'] : 'myProject' /}
+      {param descriptionText: 'JIRA project name' /}
+      {param errorTexts: $errors ? $errors['jira.project'] : null /}
+      {param rows: '1' /}
   {/call}
 {/template}

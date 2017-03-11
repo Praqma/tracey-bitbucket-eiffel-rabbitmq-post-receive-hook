@@ -1,5 +1,6 @@
 package net.praqma.stash.plugins.tracey.components.impl;
 
+import com.atlassian.stash.hook.repository.RepositoryHookContext;
 import net.praqma.stash.plugins.tracey.components.api.BrokerConfigurationService;
 import net.praqma.tracey.broker.impl.rabbitmq.RabbitMQDefaults;
 import org.slf4j.Logger;
@@ -8,32 +9,31 @@ import org.slf4j.LoggerFactory;
 public class RabbitMQBrokerConfigurationServiceImpl implements BrokerConfigurationService {
     private static final Logger LOG = LoggerFactory.getLogger(RabbitMQBrokerConfigurationServiceImpl.class);
 
-    public RabbitMQBrokerConfigurationServiceImpl() {
-        LOG.warn("Implement me!");
+    private String host = RabbitMQDefaults.HOST;
+    private String user = RabbitMQDefaults.USERNAME;
+    private String pwd = RabbitMQDefaults.PASSWORD;
+    private int port = RabbitMQDefaults.PORT;
+
+    public RabbitMQBrokerConfigurationServiceImpl(RepositoryHookContext context) {
+        host = context.getSettings().getString("rabbit.url");
+        user = context.getSettings().getString("rabbit.user");
+        pwd = context.getSettings().getString("rabbit.password");
+        port = context.getSettings().getInt("rabbit.port");
+        LOG.debug("RabbitMQ broker configured for host: " + host);
+        LOG.debug("RabbitMQ broker configured for user: " + user);
     }
 
-    // TODO: read this from global configuration
     public String getHost() {
-        return RabbitMQDefaults.HOST;
+        return host;
     }
 
-    // TODO: read this from global configuration
-    public int getPort() {
-        return RabbitMQDefaults.PORT;
-    }
+    public int getPort() { return port; }
 
-    // TODO: read this from global configuration
     public String getUsername() {
-        return RabbitMQDefaults.USERNAME;
+        return user;
     }
 
-    // TODO: read this from global configuration
     public String getPassword() {
-        return RabbitMQDefaults.PASSWORD;
-    }
-
-    // TODO: read this from repo configuration
-    public String getExchange() {
-        return RabbitMQDefaults.EXCHANGE_NAME;
+        return pwd;
     }
 }

@@ -7,7 +7,7 @@ import org.slf4j.LoggerFactory;
 
 public class RabbitMQBrokerConfigurationServiceImpl implements BrokerConfigurationService {
     private static final Logger LOG = LoggerFactory.getLogger(RabbitMQBrokerConfigurationServiceImpl.class);
-
+    
     public RabbitMQBrokerConfigurationServiceImpl() {
         LOG.warn("Implement me!");
     }

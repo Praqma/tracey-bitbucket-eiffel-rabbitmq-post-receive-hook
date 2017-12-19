@@ -14,7 +14,6 @@ import net.praqma.stash.plugins.tracey.exceptions.ProtocolServiceException;
 import net.praqma.tracey.broker.impl.rabbitmq.RabbitMQRoutingInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import java.util.Collection;
 
 @Scanned
@@ -22,9 +21,8 @@ public class EiffelRabbitMQPostReceiveHook implements AsyncPostReceiveRepository
 {
     private static final Logger LOG = LoggerFactory.getLogger(EiffelRabbitMQPostReceiveHook.class.getName());
     // TODO: all services below should be declared as actual services using ExportAsService. This is a shortcut because I can't make spring to discover them
-    private final BrokerConfigurationService brokerConfigurationService;
     private final ProtocolConfigurationService protocolConfigurationService;
-    private final BrokerService brokerService;
+    private BrokerService brokerService;
     private final ProtocolService protocolService;
     private final GitService gitService;
 
@@ -33,15 +31,14 @@ public class EiffelRabbitMQPostReceiveHook implements AsyncPostReceiveRepository
         // TODO: When exported all serives below should be brought in using @ComponentImport as it is done for the system services
         // TODO: Also, applicationPropertiesService and commitService will be not needed here since they will be consumed by corresponding services
         this.gitService = new GitServiceImpl(commitService);
-        this.brokerConfigurationService = new RabbitMQBrokerConfigurationServiceImpl();
         this.protocolConfigurationService = new EiffelProtocolConfigurationServiceImpl();
-        this.brokerService = new RabbitMQBrokerServiceImpl(brokerConfigurationService);
         this.protocolService = new EiffelProtocolServiceImpl(applicationPropertiesService, protocolConfigurationService);
     }
 
     @Override
     public void postReceive(RepositoryHookContext context, Collection<RefChange> refChanges)
     {
+        this.brokerService = new RabbitMQBrokerServiceImpl(context);
         final Repository repository = context.getRepository();
         try {
             for (RefChange change:refChanges) {

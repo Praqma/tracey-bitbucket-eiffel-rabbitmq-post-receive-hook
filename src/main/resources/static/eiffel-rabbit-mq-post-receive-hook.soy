@@ -19,6 +19,15 @@
   {/call}
 
   {call aui.form.textareaField}
+    {param id: 'rabbit.port' /}
+    {param labelContent: 'RabbitMQ server port' /}
+    {param value: $config['rabbit.port'] /}
+    {param descriptionText: 'RabbitMQ server port to connect to.' /}
+    {param errorTexts: $errors ? $errors['rabbit.port'] : null /}
+    {param rows: '4' /}
+  {/call}
+
+  {call aui.form.textareaField}
     {param id: 'rabbit.exchange' /}
     {param labelContent: 'RabbitMQ exchange name' /}
     {param value: $config['rabbit.exchange'] /}

@@ -143,3 +143,15 @@ Definition of Done
 - Buildable
 - All tests are passing
 - Documentation updated accordingly
+
+## Install plugin on a Bitbucket Server
+
+What you need is a jar file of the plugin and admin access to your Bitbucket server
+  - one way to get the jar file is to run `atlas-compile` which will generate the jar file from the source.
+  - you can find the jar file in the target folder inside the project folder
+
+Now that you have the jar file you should go and open the admin panel in Bitbucket.
+You can find this panel by pressing the cogwheel.
+
+You can look in the side panel and look for "Manage add-ons".
+on that page you have a button on the right side which is named "upload add-on", then simply find your jar and upload it

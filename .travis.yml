@@ -4,9 +4,19 @@ jdk:
 
 install: true
 
+before_script:
+  # installing Atlassian SDK to be able to build the hook
+  - wget https://marketplace.atlassian.com/download/plugins/atlassian-plugin-sdk-tgz
+  - tar zxvf atlassian-plugin-sdk-tgz
+  - mv atlassian-plugin-sdk-*/ atlassian-plugin-sdk
+  - export PATH="${PATH}:${PWD}/atlassian-plugin-sdk/bin"
+  - atlas-version
 cache:
   directories:
   - $HOME/.m2
 
 script:
+  - atlas-clean
+  - atlas-compile
+  - atlas-package
   - mvn package |  egrep -v 'Download(ing|ed)'

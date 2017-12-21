@@ -146,12 +146,29 @@ Definition of Done
 
 ## Install plugin on a Bitbucket Server
 
-What you need is a jar file of the plugin and admin access to your Bitbucket server
-  - one way to get the jar file is to run `atlas-compile` which will generate the jar file from the source.
-  - you can find the jar file in the target folder inside the project folder
+What you need is a jar file of the plugin and admin access to your Bitbucket server.
+
+Download the un-released (not yet on Atlassian Marketplace) file from Github Releases where we push it from our Travis builds:
+
+https://github.com/Praqma/tracey-bitbucket-eiffel-rabbitmq-post-receive-hook/releases
 
 Now that you have the jar file you should go and open the admin panel in Bitbucket.
 You can find this panel by pressing the cogwheel.
 
 You can look in the side panel and look for "Manage add-ons".
 on that page you have a button on the right side which is named "upload add-on", then simply find your jar and upload it
+
+
+
+## Releasing
+To release a new version of this CLI on Github release you need to tag the commit to release. This will be picked up by Travis CI.
+
+Github auth for Travis release
+
+Release is done a ReleasePraqma user and was securely created using travis setup releases
+
+```
+$ travis setup releases
+```
+
+and then adjusting the inputs afterwards to only released on tagging, as well as using file-pattern to find the file as the version number are included in the filename.

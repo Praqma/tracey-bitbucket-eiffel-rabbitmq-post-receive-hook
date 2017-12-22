@@ -160,6 +160,28 @@
                             <dataVersion>${bitbucket.data.version}</dataVersion>
                         </product>
                     </products>
+                    <pluginDependencies>
+                        <!-- According to this reference:
+                         https://developer.atlassian.com/server/framework/atlassian-sdk/bundling-extra-dependencies-in-an-obr/
+                         we need to mention our own Tracey dependencies here to be able to bundle them into
+                          the ORB which is then what we deliver instead of a jar tol the Bitbucket add manager
+
+                          This is the general info about dependency mgmt in the plugins:
+                          https://developer.atlassian.com/server/framework/atlassian-sdk/managing-dependencies/
+                          -->
+                        <pluginDependency>
+                            <groupId>com.github.Praqma</groupId>
+                            <artifactId>tracey-protocol-eiffel</artifactId>
+                        </pluginDependency>
+                        <pluginDependency>
+                            <groupId>com.github.Praqma</groupId>
+                            <artifactId>commit-message-parser</artifactId>
+                        </pluginDependency>
+                        <pluginDependency>
+                            <groupId>com.github.Praqma</groupId>
+                            <artifactId>tracey-broker</artifactId>
+                        </pluginDependency>
+                    </pluginDependencies>
                     <instructions>
                         <Atlassian-Plugin-Key>${atlassian.plugin.key}</Atlassian-Plugin-Key>
 
@@ -169,12 +191,33 @@
                         </Export-Package>
 
                         <!-- Add package import here -->
+                        <Atlassian-Plugin-Key>${atlassian.plugin.key}</Atlassian-Plugin-Key>
+                        <!-- Add package to export here -->
+                        <!-- Add package import here -->
+                        <!-- We need to import our Tracey dependencies here as well according to
+                        https://developer.atlassian.com/server/framework/atlassian-sdk/bundling-extra-dependencies-in-an-obr/
+                        -->
                         <Import-Package>
                             org.springframework.osgi.*;resolution:="optional",
                             org.eclipse.gemini.blueprint.*;resolution:="optional",
-                            *version="0";resolution:=optional
+                            com.jcraft.*;resolution:="optional",
+                            org.apache.*;resolution:="optional",
+                            sun.*;resolution:="optional",
+                            com.thoughtworks.*;resolution:="optional",
+                            groovyjarjarasm.asm.tree.*;resolution:="optional",
+                            jline;resolution:="optional",
+                            jline.*;resolution:="optional",
+                            org.junit;resolution:="optional",
+                            junit.*;resolution:="optional",
+                            org.fusesource.*;resolution:="optional",
+                            net.praqma.tracey.*;resolution:="required",
+                            com.atlassian.stash.*;resolution:="optional",
+                            *
                         </Import-Package>
-
+                        <!-- Reference http://felix.apache.org/documentation/subprojects/apache-felix-maven-bundle-plugin-bnd.html#embedding-dependencies
+                        It seems we might want to embed our own compile in deps as well like this:
+                        -->
+                        <Embed-Dependency>*;scope=compile</Embed-Dependency>
                         <!-- Ensure plugin is Spring powered -->
                         <Spring-Context>*</Spring-Context>
                     </instructions>

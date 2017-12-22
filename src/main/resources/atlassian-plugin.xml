@@ -18,7 +18,7 @@
     <resource type="download" name="images/" location="/images"/>
     <context>eiffel-rabbitmq-post-receive-hook</context>
   </web-resource>
-  <repository-hook name="Eiffel Rabbit MQ Post Receive Hook" i18n-name-key="eiffel-rabbit-mq-post-receive-hook.name" key="eiffel-rabbit-mq-post-receive-hook" class="net.praqma.stash.plugins.tracey.hook.EiffelRabbitMQPostReceiveHook">
+  <repository-hook name="Eiffel Rabbit MQ Post Receive Hook" i18n-name-key="eiffel-rabbit-mq-post-receive-hook.name" key="eiffel-rabbit-mq-post-receive-hook" class="net.praqma.bitbucket.plugins.tracey.hook.EiffelRabbitMQPostReceiveHook">
     <description key="eiffel-rabbit-mq-post-receive-hook.description">The Eiffel Rabbit MQ Post Receive Hook Plugin</description>
     <config-form name="Eiffel Rabbit MQ Post Receive Hook Config" key="eiffel-rabbit-mq-post-receive-hook-config">
       <view>net.praqma.stash.plugins.tracey.hook.eiffelrabbitmqpostreceivehook.view</view>

@@ -1,7 +1,7 @@
-package net.praqma.stash.plugins.tracey.components.api;
+package net.praqma.bitbucket.plugins.tracey.components.api;
 
-import com.atlassian.stash.repository.RefChange;
-import com.atlassian.stash.repository.Repository;
+import com.atlassian.bitbucket.repository.RefChange;
+import com.atlassian.bitbucket.repository.Repository;
 
 import java.util.Set;
 

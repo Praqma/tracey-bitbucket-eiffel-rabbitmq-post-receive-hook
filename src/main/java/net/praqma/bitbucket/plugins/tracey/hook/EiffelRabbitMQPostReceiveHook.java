@@ -1,20 +1,21 @@
-package net.praqma.stash.plugins.tracey.hook;
+package net.praqma.bitbucket.plugins.tracey.hook;
 
 import com.atlassian.plugin.spring.scanner.annotation.component.Scanned;
 import com.atlassian.plugin.spring.scanner.annotation.imports.ComponentImport;
-import com.atlassian.stash.commit.CommitService;
-import com.atlassian.stash.hook.repository.*;
-import com.atlassian.stash.repository.*;
-import com.atlassian.stash.server.ApplicationPropertiesService;
-import com.atlassian.stash.setting.*;
-import net.praqma.stash.plugins.tracey.components.api.*;
-import net.praqma.stash.plugins.tracey.components.impl.*;
-import net.praqma.stash.plugins.tracey.exceptions.BrokerServiceException;
-import net.praqma.stash.plugins.tracey.exceptions.ProtocolServiceException;
+import com.atlassian.bitbucket.commit.CommitService;
+import com.atlassian.bitbucket.hook.repository.*;
+import com.atlassian.bitbucket.repository.*;
+import com.atlassian.bitbucket.server.ApplicationPropertiesService;
+import com.atlassian.bitbucket.setting.*;
+import net.praqma.bitbucket.plugins.tracey.components.api.*;
+import net.praqma.bitbucket.plugins.tracey.components.impl.*;
+import net.praqma.bitbucket.plugins.tracey.exceptions.BrokerServiceException;
+import net.praqma.bitbucket.plugins.tracey.exceptions.ProtocolServiceException;
 import net.praqma.tracey.broker.impl.rabbitmq.RabbitMQRoutingInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import java.util.Collection;
+import net.praqma.bitbucket.plugins.tracey.components.api.ProtocolConfigurationService;
 
 @Scanned
 public class EiffelRabbitMQPostReceiveHook implements AsyncPostReceiveRepositoryHook, RepositorySettingsValidator
@@ -44,7 +45,7 @@ public class EiffelRabbitMQPostReceiveHook implements AsyncPostReceiveRepository
             for (RefChange change:refChanges) {
                 for (String sha1:gitService.getCommitsDelta(repository, change)) {
                     // TODO: read Jira project name from the plugin config when available
-                    String message = protocolService.getMessage(sha1, change.getRefId(), "http://jira.com", "myproject", repository);
+                    String message = protocolService.getMessage(sha1, change.getRef().getId(), "http://jira.com", "myproject", repository);
                     // TODO: read routing info from the plugin config when available
                     RabbitMQRoutingInfo destination = new RabbitMQRoutingInfo();
                     brokerService.send(message, destination);

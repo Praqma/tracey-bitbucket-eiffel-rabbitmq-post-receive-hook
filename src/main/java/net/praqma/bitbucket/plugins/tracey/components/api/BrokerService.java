@@ -1,6 +1,6 @@
-package net.praqma.stash.plugins.tracey.components.api;
+package net.praqma.bitbucket.plugins.tracey.components.api;
 
-import net.praqma.stash.plugins.tracey.exceptions.BrokerServiceException;
+import net.praqma.bitbucket.plugins.tracey.exceptions.BrokerServiceException;
 import net.praqma.tracey.broker.impl.rabbitmq.RabbitMQRoutingInfo;
 
 public interface BrokerService {

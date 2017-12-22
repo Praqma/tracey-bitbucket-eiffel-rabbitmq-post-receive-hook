@@ -1,6 +1,6 @@
-package net.praqma.stash.plugins.tracey.components.impl;
+package net.praqma.bitbucket.plugins.tracey.components.impl;
 
-import net.praqma.stash.plugins.tracey.components.api.BrokerConfigurationService;
+import net.praqma.bitbucket.plugins.tracey.components.api.BrokerConfigurationService;
 import net.praqma.tracey.broker.impl.rabbitmq.RabbitMQDefaults;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

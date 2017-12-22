@@ -1,4 +1,4 @@
-package net.praqma.stash.plugins.tracey.exceptions;
+package net.praqma.bitbucket.plugins.tracey.exceptions;
 
 public class ProtocolServiceException extends Exception {
 

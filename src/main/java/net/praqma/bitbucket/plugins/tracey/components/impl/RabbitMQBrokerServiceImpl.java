@@ -1,9 +1,9 @@
-package net.praqma.stash.plugins.tracey.components.impl;
+package net.praqma.bitbucket.plugins.tracey.components.impl;
 
-import com.atlassian.stash.hook.repository.RepositoryHookContext;
-import com.atlassian.stash.setting.Settings;
-import net.praqma.stash.plugins.tracey.components.api.BrokerService;
-import net.praqma.stash.plugins.tracey.exceptions.BrokerServiceException;
+import com.atlassian.bitbucket.hook.repository.RepositoryHookContext;
+import com.atlassian.bitbucket.setting.Settings;
+import net.praqma.bitbucket.plugins.tracey.components.api.BrokerService;
+import net.praqma.bitbucket.plugins.tracey.exceptions.BrokerServiceException;
 import net.praqma.tracey.broker.api.TraceyBroker;
 import net.praqma.tracey.broker.api.TraceyIOError;
 import net.praqma.tracey.broker.impl.rabbitmq.RabbitMQConnection;

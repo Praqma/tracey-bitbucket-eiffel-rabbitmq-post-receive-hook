@@ -1,12 +1,12 @@
-package net.praqma.stash.plugins.tracey.components.impl;
+package net.praqma.bitbucket.plugins.tracey.components.impl;
 
-import com.atlassian.stash.repository.Repository;
-import com.atlassian.stash.server.ApplicationPropertiesService;
+import com.atlassian.bitbucket.repository.Repository;
+import com.atlassian.bitbucket.server.ApplicationPropertiesService;
 import com.google.protobuf.InvalidProtocolBufferException;
 import com.google.protobuf.util.JsonFormat;
-import net.praqma.stash.plugins.tracey.components.api.ProtocolConfigurationService;
-import net.praqma.stash.plugins.tracey.components.api.ProtocolService;
-import net.praqma.stash.plugins.tracey.exceptions.ProtocolServiceException;
+import net.praqma.bitbucket.plugins.tracey.components.api.ProtocolConfigurationService;
+import net.praqma.bitbucket.plugins.tracey.components.api.ProtocolService;
+import net.praqma.bitbucket.plugins.tracey.exceptions.ProtocolServiceException;
 import net.praqma.tracey.protocol.eiffel.events.EiffelSourceChangeCreatedEventOuterClass.EiffelSourceChangeCreatedEvent;
 import net.praqma.tracey.protocol.eiffel.factories.EiffelSourceChangeCreatedEventFactory;
 import net.praqma.tracey.protocol.eiffel.models.Models;

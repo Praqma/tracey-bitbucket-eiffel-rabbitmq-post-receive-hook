@@ -1,15 +1,15 @@
-package net.praqma.stash.plugins.tracey.components.impl;
+package net.praqma.bitbucket.plugins.tracey.components.impl;
 
-import com.atlassian.stash.commit.Commit;
-import com.atlassian.stash.commit.CommitService;
-import com.atlassian.stash.commit.CommitsBetweenRequest;
-import com.atlassian.stash.repository.Repository;
-import com.atlassian.stash.repository.RefChange;
-import com.atlassian.stash.repository.RefChangeType;
-import com.atlassian.stash.util.*;
+import com.atlassian.bitbucket.commit.Commit;
+import com.atlassian.bitbucket.commit.CommitService;
+import com.atlassian.bitbucket.commit.CommitsBetweenRequest;
+import com.atlassian.bitbucket.repository.Repository;
+import com.atlassian.bitbucket.repository.RefChange;
+import com.atlassian.bitbucket.repository.RefChangeType;
+import com.atlassian.bitbucket.util.*;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
-import net.praqma.stash.plugins.tracey.components.api.GitService;
+import net.praqma.bitbucket.plugins.tracey.components.api.GitService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -35,10 +35,10 @@ public class GitServiceImpl implements GitService {
         // We only care about non-deleted branches
         LOG.debug("Get list of new commits for the following change");
         LOG.debug("type: " + refChange.getType());
-        LOG.debug("refId: " + refChange.getRefId());
+        LOG.debug("refId: " + refChange.getRef().getId());
         LOG.debug("from hash: " + refChange.getFromHash());
         LOG.debug("to hash: " + refChange.getToHash());
-        if (refChange.getType() != RefChangeType.DELETE && refChange.getRefId().startsWith(REFS_HEADS)) {
+        if (refChange.getType() != RefChangeType.DELETE && refChange.getRef().getId().startsWith(REFS_HEADS)) {
             final CommitsBetweenRequest request = new CommitsBetweenRequest.Builder(repository)
                     .exclude(refChange.getFromHash())
                     .include(refChange.getToHash())

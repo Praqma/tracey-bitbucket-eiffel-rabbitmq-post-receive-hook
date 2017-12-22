@@ -1,6 +1,6 @@
-package net.praqma.stash.plugins.tracey.components.impl;
+package net.praqma.bitbucket.plugins.tracey.components.impl;
 
-import net.praqma.stash.plugins.tracey.components.api.ProtocolConfigurationService;
+import net.praqma.bitbucket.plugins.tracey.components.api.ProtocolConfigurationService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

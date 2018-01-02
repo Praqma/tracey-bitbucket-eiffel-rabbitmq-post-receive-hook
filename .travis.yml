@@ -14,14 +14,14 @@ cache:
 script:
 - atlas-package
 before_deploy:
-  - echo "deploying $RELEASE_JAR_FILE to GitHub releases"
-  - export RELEASE_JAR_FILE=$(ls target/eiffel-rabbitmq-post-receive-hook*.jar)
+  - export RELEASE_OBR_FILE=$(ls target/eiffel-rabbitmq-post-receive-hook*.obr)
+  - echo "deploying $RELEASE_OBR_FILE to GitHub releases"
 deploy:
   provider: releases
   api_key:
     secure: p750buwL18LTFQVhYWIyrOB7snrnHskOXdzwwCfTvWo9hUKGWphLFfoh0OqOfENlYm9fmWpZchuDSE9OBL0XrtiFX8F/GVpzHa2O1qW3597O768DHEz3Ip3xYdnXvUXAYgNE4nYTAoPwHVlZFtEySTwL5APNb2YE6bdEPVXlyVO4J9JlAwo3nBoeZZJ8pSQyUCI9Gm6H/A5Cw1g9cbEfnpqjGxI1fXV7I/AMjbgnJwNzvq1GDCztngn35tYU7x7i2ZLGzIqS4yZ7OGovcEdvGEtVt1udTSiM1QyYd1co/XPHBArfyRa+2Z1NZ/CHIg/olSACoVMPus2vbMGXOuPPx68uvxAMzh2ycTTdifNdsKKkD/m4DM+ouDS/B3qotAIbN+GDYonh5xgQHOE8Iw27YfiNSgk8FbpAXHUYlIuK/WcVDjvhT8uwBJCxdB63ORT5oDliIw9AHw0YLTR7J5zb1v39Ot/grcO9R4kOo8/aiHDHE6vpeAEKxLlwVbG9093m4N5i9T6YET08bVQCFcFOWW543+eleYk5STHGRE6m5u5i5DN7aU66OqQHZiqUXNhY8Wye28fbdwsn8uZLK6YVRdNbwYrwKhXS2YatUagZewLzqIfpTd2VFRhJiV9WCGJIRURbO7GCNCCT5Kmahf0wQFqNrWtT4+J0/TdFbtEw3Qw=
   file_glob: true
-  file: "${RELEASE_JAR_FILE}"
+  file: "${RELEASE_OBR_FILE}"
   skip_cleanup: true
   on:
     tags: true

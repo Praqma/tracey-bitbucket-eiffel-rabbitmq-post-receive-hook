@@ -1,20 +1,64 @@
 ---
-maintainer: andrey9kin
+maintainer: buep
 ---
 # Post receive hook to send Eiffel messages using RabbitMQ message broker
 
-This is a prof of concept version of the plugin and was only tested using Bitbucket running in development mode
+This is a prof of concept version of the plugin and it was only validated in very simple ways with Bitbucket server 5.4.0.
+
+**Limitations**:
+
+  * not all configuration fields in current version is used
+  * the plugin is not released on Atlassian marketplace
+  * it not thoroughly tested yet, but seems to do the job
+  * it's opinionated in how tthe messages are constructed, but they are valid EiffelSourceChangeCreatedEvent so you can easily start to use it
+  * Check the Github issues on all the things still missing
+
+
+## Install the add-on on a Bitbucket Server
+
+You need admin access to the Bitbucket server.
+
+Download the un-released (not yet on Atlassian Marketplace) file from Github Releases where we push it from our Travis builds:
+
+https://github.com/Praqma/tracey-bitbucket-eiffel-rabbitmq-post-receive-hook/releases
+
+(or point Bitbucket add installation directly to the relevant link of released OBR file)
+
+If not familiar with Bitbucket here is how you install add-ons:
+
+  * Open the admin panel in Bitbucket. You can find this panel by pressing the cogwheel.
+  * Look to the left, lower part of the administration page and find `Manage add-ons` and go there.
+   * On the Manage add-ons page there is a button on the right side which is named `Upload add-on` and from there you can upload the downloaded released OBR file from the above mentioned Github releases or supply the direct link to the file.
+
+When you finishd the installation, it should show up as an enabled add-on. Each repository on your Bitbucket server can now enable this post-receive hook and configure it **per repository level** (no global default configuration is offered yet).
+
+## Configuring the post-receive add-on
+
+Find the relevant repository to enable the post-receive hook for.
+
+Go to `Repository settings` and `Hooks` under Workflows. You should see the **Eiffel Rabbit MQ Post Receive Hook**.
+
+![Enable the Eiffel Rabbit MQ Post Receive Hook](/images/Eiffel-RabbitMQ-Post-Receive-Hook-enable-it.jpg)
+
+Enable it and the configuration pops up. Configure the first 3 fields, and last 2 fields. The image is a bit blurry, so it could all be seen, but these values are the important ones:
+
+  * `RabbitMQ server address` (required): IP or DNS name of your RabbitMQ server, obviously reachable from the Bitbucket server itself.
+  * `RabbitMQ server port` (required): Port number, here we use the default.
+  * `RabbitMQ exchange name` (required): An existing or new exchange on your RabbitMQ server. Will be created if not exists. Recommend to use `tracey` as name for now.
+  * `RabbitMQ routing key`: _not use - leavy empty_.
+  * `RabbitMQ user name` and `RabbitMQ password` (required): user account on RabbitMQ used to deliver messages with.
+
+![Configure the Eiffel Rabbit MQ Post Receive Hook](/images/Eiffel-RabbitMQ-Post-Receive-Hook-configure-it.jpg)
+
 
 ## Why?
-To provide a better (comparing to web hooks) way to trigger events on SCM changes and enable better traceability within
-Continuous Delivery pipeline
+To provide a better (comparing to web hooks) way to trigger events on SCM changes and enable better traceability within Continuous Delivery pipeline
 
 Read more about traceability using Eiffel messages [here](https://github.com/Ericsson/eiffel) and check out examples
 [here](https://github.com/Ericsson/eiffel/blob/master/usage-examples/delivery-interface.md)
 
 ## What?
-RabbitMQ message containing EiffelSourceChangeCreatedEvent (see example below) will be sent every time new
-commit is pushed to the branch
+RabbitMQ message containing EiffelSourceChangeCreatedEvent (see example below) will be sent every time new commit is pushed.
 
 ```
 {
@@ -64,17 +108,16 @@ We are using [Tracey project](https://github.com/praqma/tracey) and [its impleme
 Hook will parse new commit message using factory from Tracey Eiffel protocol library and [commit-message-parser](https://github.com/Praqma/commit-message-parser) library
 to generate the message and then will send it using [Tracey Broker library](https://github.com/praqma/tracey-broker)
 
-You can use [Tracey RabbitMQ trigger plugin for Jenkins](https://github.com/Praqma/tracey-jenkins-trigger-plugin) or use
-[command line client](https://github.com/Praqma/tracey-cli-rabbitmq)
+You can use [Tracey RabbitMQ trigger plugin for Jenkins](https://github.com/Praqma/tracey-jenkins-trigger-plugin) to trigger Jenkins job based on Eiffel events. And you can use
+[command line client](https://github.com/Praqma/tracey-cli-rabbitmq) to send events or subscribe to them for debugging and experiments as well.
 
-## Configuration
-Current version of the plugin does not provide possibility to configure it from web UI and uses hardcoded RabbitMQ
-configuration. You will have to rebuild the plugin if you want to change it.
-
-Make sure that you run RabbitMQ instance on the same machine as your BitBucket instance since plugin will attempt to
-connect and send messages to localhost:5672 with username guest and password guest
 
 ## Usage/Demo
+
+**These steps are DEPRECATED (it works without Atlas run and with non-local Bitbucket/RabbitMQ server). The images still shows some important internals of how it works**.
+  * New demo setup will be supplied at some point to allow you to try it out using docker images and few demo scripts.
+
+
 Install Atlassian SDK using [this instruction](https://developer.atlassian.com/docs/getting-started/set-up-the-atlassian-plugin-sdk-and-build-a-project)
 
 Clone this repo, step in to the repository and start Bitbucket in development mode
@@ -144,23 +187,9 @@ Definition of Done
 - All tests are passing
 - Documentation updated accordingly
 
-## Install plugin on a Bitbucket Server
-
-What you need is a jar file of the plugin and admin access to your Bitbucket server.
-
-Download the un-released (not yet on Atlassian Marketplace) file from Github Releases where we push it from our Travis builds:
-
-https://github.com/Praqma/tracey-bitbucket-eiffel-rabbitmq-post-receive-hook/releases
-
-Now that you have the jar file you should go and open the admin panel in Bitbucket.
-You can find this panel by pressing the cogwheel.
-
-You can look in the side panel and look for "Manage add-ons".
-on that page you have a button on the right side which is named "upload add-on", then simply find your jar and upload it
 
 
-
-## Releasing
+### Releasing
 To release a new version of this CLI on Github release you need to tag the commit to release. This will be picked up by Travis CI.
 
 Github auth for Travis release

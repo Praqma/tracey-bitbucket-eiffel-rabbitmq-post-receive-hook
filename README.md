@@ -1,5 +1,5 @@
 ---
-maintainer: buep
+maintainer: MadsNielsen
 ---
 # Post receive hook to send Eiffel messages using RabbitMQ message broker
 
